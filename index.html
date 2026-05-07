@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sheng Hung Wang (Hank) — Index Researcher</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Spectral:wght@300;400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream: #f5f0e8;
+      --cream-dark: #ede7d9;
+      --navy: #0d1f3c;
+      --navy-mid: #1a3560;
+      --navy-light: #2a4a7f;
+      --gold: #b8a06a;
+      --gold-light: #d4bc8a;
+      --text: #1a1a2e;
+      --text-muted: #5a6a8a;
+      --border: rgba(13,31,60,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'Spectral', Georgia, serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 4rem;
+      background: rgba(245,240,232,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--navy);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+
+    .nav-links a:hover { color: var(--navy); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 4rem 5rem 4rem;
+      border-right: 1px solid var(--border);
+    }
+
+    .hero-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+    }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      font-weight: 600;
+      line-height: 1.05;
+      color: var(--navy);
+      margin-bottom: 0.3rem;
+    }
+
+    .hero-name em {
+      font-style: normal;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .hero-sub {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-weight: 300;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      font-style: italic;
+    }
+
+    .hero-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 420px;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--navy);
+      text-decoration: none;
+      border-bottom: 1px solid var(--navy);
+      padding-bottom: 0.3rem;
+      transition: color 0.25s, border-color 0.25s;
+    }
+
+    .hero-cta:hover { color: var(--gold); border-color: var(--gold); }
+
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 5rem 4rem;
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      border: 1px solid rgba(184,160,106,0.2);
+    }
+
+    .hero-right::after {
+      content: '';
+      position: absolute;
+      top: -20px; right: -20px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      border: 1px solid rgba(184,160,106,0.12);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-item {
+      border-top: 1px solid rgba(184,160,106,0.3);
+      padding-top: 1.2rem;
+    }
+
+    .stat-number {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--gold-light);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* ── SECTIONS COMMON ── */
+    section {
+      padding: 7rem 4rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .section-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--navy);
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--cream-dark);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .about-intro {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+      font-weight: 300;
+      line-height: 1.5;
+      color: var(--navy);
+    }
+
+    .about-intro em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .about-body {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.9;
+      margin-bottom: 2rem;
+    }
+
+    .skills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 2rem;
+    }
+
+    .skill-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.9rem;
+      border: 1px solid var(--border);
+      color: var(--navy-mid);
+      background: transparent;
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--cream); }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 3rem;
+      padding: 3rem 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .exp-item:last-child { border-bottom: 1px solid var(--border); }
+
+    .exp-meta {}
+
+    .exp-period {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .exp-company {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.1rem;
+      color: var(--navy);
+      font-weight: 400;
+      margin-bottom: 0.2rem;
+    }
+
+    .exp-location {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    .exp-role {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.4rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--navy);
+      margin-bottom: 1rem;
+    }
+
+    .exp-desc {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+      margin-bottom: 1.2rem;
+    }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--navy); }
+
+    #projects .section-title { color: var(--cream); }
+    #projects .section-num { color: var(--gold); }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: rgba(184,160,106,0.15);
+    }
+
+    .project-card {
+      background: var(--navy);
+      padding: 2.5rem;
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .project-card:hover { background: var(--navy-mid); }
+
+    .project-aum {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--gold-light);
+      margin-bottom: 0.3rem;
+    }
+
+    .project-aum-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 1.5rem;
+    }
+
+    .project-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.05rem;
+      color: var(--cream);
+      margin-bottom: 0.8rem;
+      line-height: 1.4;
+    }
+
+    .project-id {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .project-desc {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.8;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--cream-dark);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 7rem 4rem;
+    }
+
+    .contact-headline {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 300;
+      color: var(--navy);
+      margin-bottom: 1rem;
+    }
+
+    .contact-headline em { font-style: italic; color: var(--gold); }
+
+    .contact-sub {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 3.5rem;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .contact-link-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .contact-link-value {
+      font-family: 'Spectral', serif;
+      font-size: 0.95rem;
+      color: var(--navy);
+      transition: color 0.25s;
+    }
+
+    .contact-link:hover .contact-link-value { color: var(--gold); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      nav .nav-links { gap: 1.5rem; }
+
+      #hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 5rem 1.5rem 3rem; }
+      .hero-right { padding: 3rem 1.5rem; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+
+      section { padding: 4rem 1.5rem; }
+
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+
+      .exp-item { grid-template-columns: 1fr; gap: 1rem; }
+
+      .projects-grid { grid-template-columns: 1fr; }
+
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Hank Wang</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <p class="hero-tag">Index Researcher · Quantitative Analyst</p>
+    <h1 class="hero-name">Sheng Hung<br><em>Wang</em></h1>
+    <p class="hero-sub">Hank</p>
+    <p class="hero-desc">
+      7+ years designing and maintaining indices across smart beta, ESG, multi-asset, and factor-based strategies. Translating investment research into commercially viable index methodologies within the Taiwanese equity market.
+    </p>
+    <a href="#about" class="hero-cta">Explore Profile →</a>
+  </div>
+  <div class="hero-right">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">20+</div>
+        <div class="stat-label">Indices Designed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">7+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">3</div>
+        <div class="stat-label">ESG Models Built</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">TWD 110B</div>
+        <div class="stat-label">Peak ETF AUM (Apr 2026)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header fade-up">
+    <span class="section-num">01</span>
+    <h2 class="section-title">About</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-intro fade-up">
+      A researcher who turns <em>factor signals</em> into investable index solutions.
+    </div>
+    <div class="fade-up">
+      <p class="about-body">
+        Currently serving as Deputy Manager at Taiwan Index Plus Corporation (TIP), a wholly owned subsidiary of the Taiwan Stock Exchange (TWSE). My work spans the full lifecycle of index product development — from academic research and methodology design to ETF licensing and fund mandates.
+      </p>
+      <p class="about-body">
+        I specialize in factor investing, smart beta strategies, ESG integration, and multi-asset allocation frameworks, with deep expertise in Taiwanese equity markets. My research focuses on building systematic methodologies that deliver stable, long-term alpha by analyzing factors across backtested performance, return consistency, and forward-looking correlations.
+      </p>
+      <div class="skills-row">
+        <span class="skill-tag">R</span>
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">Factor Investing</span>
+        <span class="skill-tag">Smart Beta</span>
+        <span class="skill-tag">ESG Integration</span>
+        <span class="skill-tag">Index Design</span>
+        <span class="skill-tag">ETF Structuring</span>
+        <span class="skill-tag">Backtesting</span>
+        <span class="skill-tag">Asset Allocation</span>
+        <span class="skill-tag">Multi-Asset</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header fade-up">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Experience</h2>
+  </div>
+
+  <div class="exp-item fade-up">
+    <div class="exp-meta">
+      <p class="exp-period">2018/06 — Present</p>
+      <p class="exp-company">Taiwan Index Plus Corporation</p>
+      <p class="exp-location">Taipei, Taiwan · TWSE Subsidiary</p>
+    </div>
+    <div>
+      <p class="exp-role">Deputy Manager, Research & Design</p>
+      <p class="exp-desc">Lead index research, methodology design, and factor analysis with focus on ETF benchmarks, smart beta strategies, ESG integration, and multi-asset indices. Responsible for the full development cycle from quantitative research to commercial product launch and fund mandates.</p>
+    </div>
+  </div>
+
+  <div class="exp-item fade-up">
+    <div class="exp-meta">
+      <p class="exp-period">2017/07 — 2017/08</p>
+      <p class="exp-company">Bank of China Limited</p>
+      <p class="exp-location">Guangzhou, China</p>
+    </div>
+    <div>
+      <p class="exp-role">Internship, Guangzhou Branch</p>
+      <p class="exp-desc">Rotation across banking operations at the Guangzhou branch, gaining exposure to commercial banking processes and financial services in Mainland China.</p>
+    </div>
+  </div>
+
+  <div class="exp-item fade-up">
+    <div class="exp-meta">
+      <p class="exp-period">2012/11 — 2014/08</p>
+      <p class="exp-company">The Dow Chemical Company</p>
+      <p class="exp-location">Chiayi, Taiwan</p>
+    </div>
+    <div>
+      <p class="exp-role">Quality Specialist, QC Department</p>
+      <p class="exp-desc">Managed quality control processes and ensured compliance with regulatory and product standards within a global chemical manufacturing environment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header fade-up">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Key Projects</h2>
+  </div>
+
+  <div class="projects-grid">
+    <div class="project-card fade-up">
+      <div class="project-aum">TWD 73B</div>
+      <div class="project-aum-label">AUM at Peak (as of Mar 2026)</div>
+      <div class="project-id">IX0230 · KGI 009816</div>
+      <div class="project-name">TIP Customized Taiwan Top 50 Index</div>
+      <p class="project-desc">Differentiated alternative to FTSE TWSE Taiwan 50 Index, incorporating quality screening and momentum tilting. Launched as KGI Taiwan TOP 50 ETF (009816) in February 2026, growing from TWD 9bn to 73bn within one month.</p>
+    </div>
+
+    <div class="project-card fade-up">
+      <div class="project-aum">TWD 0.3B</div>
+      <div class="project-aum-label">AUM (as of Mar 2026)</div>
+      <div class="project-id">IX0226 · Mega 00982T</div>
+      <div class="project-name">Bloomberg TIP Taiwan–U.S. Momentum Balanced Multi-Asset Index</div>
+      <p class="project-desc">Rules-based multi-asset allocation index using moving-average signals to identify market regimes across aggressive, stable, conservative, and special states. Launched as Mega Taiwan–U.S. Momentum Balanced ETF in December 2025.</p>
+    </div>
+
+    <div class="project-card fade-up">
+      <div class="project-aum">TWD 25B</div>
+      <div class="project-aum-label">Labor Fund Mandate (2020)</div>
+      <div class="project-id">IX0133 · Bureau of Labor Funds</div>
+      <div class="project-name">TIP Taiwan Market CSR Small/Mid-Cap Index</div>
+      <p class="project-desc">SRI and Smart Beta index co-developed with Research Affiliates. Built ESG rating framework and integrated multi-factor model into methodology. Adopted as benchmark for a TWD 25bn mandate by Taiwan's Bureau of Labor Funds.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2 class="contact-headline fade-up">Let's <em>Connect</em></h2>
+  <p class="contact-sub fade-up">Open to index research collaboration, ETF development discussions, and quantitative finance opportunities.</p>
+  <div class="contact-links fade-up">
+    <a href="mailto:w.s.t.hung@gmail.com" class="contact-link">
+      <span class="contact-link-label">Email</span>
+      <span class="contact-link-value">w.s.t.hung@gmail.com</span>
+    </a>
+    <a href="tel:+886973240382" class="contact-link">
+      <span class="contact-link-label">Phone</span>
+      <span class="contact-link-value">+886 973 240 382</span>
+    </a>
+    <a href="https://linkedin.com" target="_blank" class="contact-link">
+      <span class="contact-link-label">LinkedIn</span>
+      <span class="contact-link-value">View Profile</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Sheng Hung Wang. All rights reserved.</p>
+  <p>Index Researcher · Taiwan</p>
+</footer>
+
+<script>
+  // Scroll animation
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  fadeEls.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
