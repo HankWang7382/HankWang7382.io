@@ -201,8 +201,8 @@
 
     .hero-tag {
       font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.22em;
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--gold);
       margin-bottom: 2rem;
@@ -639,21 +639,30 @@
 <!-- HERO -->
 <section id="hero">
   <div class="hero-left">
-    <p class="hero-tag">Index Researcher · Quantitative Analyst</p>
+    <p class="hero-tag">Index Researcher · Quantitative Analyst · ESG Evaluation Model Developer</p>
     <h1 class="hero-name">Sheng Hung<br><em>Wang</em> (Hank)</h1>
     <p class="hero-desc">
       7+ years designing and maintaining indices across smart beta, ESG, multi-asset, and factor-based strategies. Translating investment research into commercially viable index methodologies within the Taiwanese equity market.
     </p>
     <div style="display:flex;gap:1.2rem;margin-top:2rem;flex-wrap:wrap;">
       <a href="#about" class="hero-cta">Explore Profile →</a>
-      <button onclick="toggleProjectPanel()" style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;background:var(--gold);color:var(--navy);border:none;padding:0.75rem 1.6rem;border-radius:3px;cursor:pointer;transition:all 0.25s;font-weight:600;box-shadow:0 4px 12px rgba(139,168,106,0.2);" onmouseover="this.style.boxShadow='0 6px 16px rgba(139,168,106,0.3)'" onmouseout="this.style.boxShadow='0 4px 12px rgba(139,168,106,0.2)'">View Projects →</button>
+      <button onclick="toggleProjectPanel()" style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;background:var(--gold);color:var(--navy);border:none;padding:0.75rem 1.6rem;border-radius:3px;cursor:pointer;transition:all 0.25s;font-weight:600;box-shadow:0 4px 12px rgba(139,168,106,0.2);" onmouseover="this.style.boxShadow='0 6px 16px rgba(139,168,106,0.3)'" onmouseout="this.style.boxShadow='0 4px 12px rgba(139,168,106,0.2)'">View Featured Project →</button>
     </div>
   </div>
   <div class="hero-right">
+    <!-- ETF Highlight Card (top half) -->
+    <div style="background:rgba(13,31,60,0.06);border:1px solid var(--border);border-radius:4px;padding:1.8rem;margin-bottom:1.5rem;">
+      <div style="font-family:'DM Mono',monospace;font-size:1rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;">Featured · TIP Customized Taiwan Top 50 Index · KGI 009816 ETF</div>
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.6rem;font-weight:600;color:var(--gold);margin-bottom:0.3rem;">TWD 133B</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--gold);margin-bottom:1rem;letter-spacing:0.08em;">Peak ETF AUM · May 2026</div>
+      <p style="font-family:'DM Mono',monospace;font-size:0.75rem;line-height:1.7;color:var(--cream);margin:0 0 1rem 0;">Index enhancement strategy that tracks the FTSE TWSE Taiwan 50 Index while incorporating momentum factor tilting to increase long-term returns and create market differentiation. Non-dividend-paying structure. Launched as KGI Taiwan TOP 50 ETF (009816) in February 2026, <span style="color:var(--gold);">growing from TWD 9bn to 73bn within one month</span>, setting a record as the fastest Taiwan-listed equity ETF to reach <span style="color:var(--gold);">100bn scale</span>.</p>
+    </div>
+    <!-- Stats Grid (bottom half) -->
     <div class="stats-grid">
       <div class="stat-item">
         <div class="stat-number">20+</div>
         <div class="stat-label">Indices Designed</div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--text-muted);margin-top:0.6rem;line-height:1.5;">Market-cap · Smart Beta · ESG · Multi-Asset</div>
       </div>
       <div class="stat-item">
         <div class="stat-number">7+</div>
@@ -662,10 +671,7 @@
       <div class="stat-item">
         <div class="stat-number">3</div>
         <div class="stat-label">ESG Models Built</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number">TWD 110B</div>
-        <div class="stat-label">Peak ETF AUM (Apr 2026)</div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--text-muted);margin-top:0.6rem;line-height:1.5;">ESG · Gender Equality</div>
       </div>
     </div>
   </div>
@@ -719,7 +725,7 @@
       </p>
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <span style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;">2008 – 2026 · Research</span>
-        <span style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.08em;">→ Open</span>
+        <span style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.08em;">→ VIEW Featured PROJECT</span>
       </div>
     </div>
 
@@ -778,14 +784,6 @@
 
   <div class="projects-grid">
     <div class="project-card fade-up">
-      <div class="project-aum">TWD 73B</div>
-      <div class="project-aum-label">AUM at Peak (as of Mar 2026)</div>
-      <div class="project-id">IX0230 · KGI 009816</div>
-      <div class="project-name">TIP Customized Taiwan Top 50 Index</div>
-      <p class="project-desc">Differentiated alternative to FTSE TWSE Taiwan 50 Index, incorporating quality screening and momentum tilting. Launched as KGI Taiwan TOP 50 ETF (009816) in February 2026, growing from TWD 9bn to 73bn within one month.</p>
-    </div>
-
-    <div class="project-card fade-up">
       <div class="project-aum">TWD 0.3B</div>
       <div class="project-aum-label">AUM (as of Mar 2026)</div>
       <div class="project-id">IX0226 · Mega 00982T</div>
@@ -820,13 +818,15 @@
       <span class="contact-link-label">LinkedIn</span>
       <span class="contact-link-value">View Profile</span>
     </a>
+    <div class="contact-link" style="cursor:default;">
+      <span class="contact-link-label">Location</span>
+      <span class="contact-link-value">Taipei, Taiwan</span>
+    </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <p>© 2026 Sheng Hung Wang (Hank). All rights reserved.</p>
-  <p>Index Researcher · Taiwan</p>
 </footer>
 
 <script>
