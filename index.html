@@ -797,6 +797,7 @@
         onmouseleave="closeDropdown()">
       <a href="#" class="nav-dropdown-toggle" onclick="return false;">Projects</a>
       <ul class="nav-dropdown-menu">
+        <li><a href="#" onclick="openProject('gender-equality-clustering'); return false;">Clustering Stability of the Gender Equality Model</a></li>
         <li><a href="#" onclick="openProject('factor-analysis'); return false;">Style Factor Analysis</a></li>
       </ul>
     </li>
@@ -885,7 +886,7 @@
     <div style="background:var(--cream);border:1px solid var(--border);border-radius:4px;padding:2rem;cursor:pointer;transition:all 0.3s;box-shadow:0 2px 8px rgba(13,31,60,0.06);" 
          onmouseover="this.style.boxShadow='0 8px 24px rgba(13,31,60,0.12)';this.style.transform='translateY(-2px)'"
          onmouseout="this.style.boxShadow='0 2px 8px rgba(13,31,60,0.06)';this.style.transform='translateY(0)'"
-         onclick="toggleProjectPanel()">
+         onclick="openProject('factor-analysis')">
       <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem;color:var(--navy);margin:0 0 1rem 0;">Style Factor Analysis</h3>
       <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.15rem;color:var(--gold);margin:0 0 1rem 0;font-weight:500;">Taiwan Equity Market · Long-Short Factor Portfolio</p>
       <p style="font-family:'DM Mono',monospace;font-size:0.98rem;line-height:1.6;color:var(--text-muted);margin:0 0 1.5rem 0;">
@@ -893,6 +894,22 @@
       </p>
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <span style="font-family:'DM Mono',monospace;font-size:0.86rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;">2008 – 2026 · Research</span>
+        <span style="font-family:'DM Mono',monospace;font-size:0.92rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.08em;">→ VIEW Featured PROJECT</span>
+      </div>
+    </div>
+
+    <!-- Project Card: Gender Equality Model Clustering Stability -->
+    <div style="background:var(--cream);border:1px solid var(--border);border-radius:4px;padding:2rem;cursor:pointer;transition:all 0.3s;box-shadow:0 2px 8px rgba(13,31,60,0.06);"
+         onmouseover="this.style.boxShadow='0 8px 24px rgba(13,31,60,0.12)';this.style.transform='translateY(-2px)'"
+         onmouseout="this.style.boxShadow='0 2px 8px rgba(13,31,60,0.06)';this.style.transform='translateY(0)'"
+         onclick="openProject('gender-equality-clustering')">
+      <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem;color:var(--navy);margin:0 0 1rem 0;">Clustering Stability Analysis of the Gender Equality Evaluation Model</h3>
+      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.15rem;color:var(--gold);margin:0 0 1rem 0;font-weight:500;">TIP Taiwan Gender Equality Index · Hierarchical Clustering</p>
+      <p style="font-family:'DM Mono',monospace;font-size:0.98rem;line-height:1.6;color:var(--text-muted);margin:0 0 1.5rem 0;">
+        Investigated the stability of hierarchical clustering results underlying the Gender Equality Evaluation Model, which groups listed and OTC companies by female workforce structure. Evaluated five linkage methods (Single, Complete, Average, Centroid, Ward's) and three cluster validity indices (Silhouette, Davies-Bouldin, Dunn Index) across annual rebalancing cycles from 2016 to 2021. F-measure via confusion matrix was used to quantify year-over-year clustering consistency. Optimal configuration identified as Ward's method with Dunn Index, cluster count constrained to 4–9, and IQR-based outlier detection, achieving the highest adjusted F-measure and Kendall's tau stability.
+      </p>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-family:'DM Mono',monospace;font-size:0.86rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;">2023 · Research</span>
         <span style="font-family:'DM Mono',monospace;font-size:0.92rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.08em;">→ VIEW Featured PROJECT</span>
       </div>
     </div>
@@ -1036,6 +1053,15 @@
         <p style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--text-muted);margin:0;text-transform:uppercase;letter-spacing:0.08em;">Taiwan Equity Market · 2008–2026</p>
         <p style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--gold);margin:0.5rem 0 0 0;text-transform:uppercase;letter-spacing:0.08em;">→ Open</p>
       </div>
+      <!-- Project Item: Gender Equality Model Clustering Stability -->
+      <div style="padding:1.5rem 2rem;border-bottom:1px solid var(--border);cursor:pointer;transition:all 0.2s;"
+           onmouseover="this.style.background='rgba(139,168,106,0.06)';this.style.paddingLeft='2.4rem'"
+           onmouseout="this.style.background='transparent';this.style.paddingLeft='2rem'"
+           onclick="openProject('gender-equality-clustering');toggleProjectPanel()">
+        <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.1rem;color:var(--navy);margin:0 0 0.5rem 0;">Clustering Stability of the Gender Equality Model</h3>
+        <p style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--text-muted);margin:0;text-transform:uppercase;letter-spacing:0.08em;">TIP Taiwan GE Index · IX0223 · 2023</p>
+        <p style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--gold);margin:0.5rem 0 0 0;text-transform:uppercase;letter-spacing:0.08em;">→ Open</p>
+      </div>
     </div>
   </div>
 
@@ -1073,8 +1099,14 @@
       document.getElementById('nav-projects-dropdown').classList.remove('open');
     }
     function openProject(name) {
-      const titles = { 'factor-analysis': 'Style Factor Analysis — Taiwan Equity Market' };
-      const srcs   = { 'factor-analysis': 'factor-analysis.html' };
+      const titles = {
+        'factor-analysis': 'Style Factor Analysis — Taiwan Equity Market',
+        'gender-equality-clustering': 'Clustering Stability Analysis — Gender Equality Evaluation Model'
+      };
+      const srcs = {
+        'factor-analysis': 'factor-analysis.html',
+        'gender-equality-clustering': 'gender-equality-clustering.html'
+      };
       document.getElementById('project-title').textContent = titles[name] || name;
       document.getElementById('project-frame').src = srcs[name] || '';
       document.getElementById('project-overlay').classList.add('open');

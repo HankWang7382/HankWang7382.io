@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Clustering Stability — Gender Equality Evaluation Model</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Cormorant+Garamond:wght@300;400;600&family=Spectral:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream:#f5f0e8; --cream-dark:#ede7d9;
+      --navy:#0d1f3c; --navy-mid:#1a3560;
+      --gold:#b8a06a; --text:#1a1a2e; --text-muted:#5a6a8a;
+      --border:rgba(13,31,60,0.12);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--cream);color:var(--text);font-family:'Spectral',Georgia,serif;font-weight:300;min-height:100vh;}
+
+    /* ── HEADER ── */
+    header{background:var(--navy);padding:2.5rem 4rem;border-bottom:1px solid rgba(184,160,106,0.2);}
+    .header-tag{font-family:'DM Mono',monospace;font-size:0.85rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;}
+    header h1{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:#f5f0e8;margin-bottom:0.4rem;}
+    header p{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;color:rgba(255,255,255,0.35);text-transform:uppercase;}
+    header p.header-universe{font-size:0.72rem;color:rgba(255,255,255,0.5);margin-top:0.4rem;}
+
+    /* ── NAV BAR ── */
+    .toc-bar{background:var(--cream-dark);border-bottom:1px solid var(--border);padding:0.7rem 4rem;display:flex;gap:2rem;flex-wrap:wrap;position:sticky;top:0;z-index:50;}
+    .toc-bar a{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+    .toc-bar a:hover{color:var(--navy);}
+
+    /* ── MAIN ── */
+    main{max-width:1100px;margin:0 auto;padding:3rem 4rem 5rem;}
+
+    /* ── FLOW CONNECTOR ── */
+    .flow-connector{display:flex;align-items:center;justify-content:center;padding:0.4rem 0;margin:0 0 0;}
+    .flow-connector span{font-family:'DM Mono',monospace;font-size:1.2rem;color:var(--gold);}
+
+    /* ── SECTION ── */
+    .section{background:white;border:1px solid var(--border);padding:2rem 2.2rem;margin-bottom:0.4rem;}
+    .section.accent{border-left:4px solid var(--gold);}
+    .section.dark{background:var(--navy);border-color:transparent;}
+    .section-tag{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;}
+    .section h2{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:300;color:var(--navy);margin-bottom:0.35rem;}
+    .section.dark h2{color:var(--gold);}
+    .section .subtitle{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.4rem;padding-bottom:0.8rem;border-bottom:1px solid var(--border);}
+    .section.dark .subtitle{color:rgba(255,255,255,0.35);border-bottom-color:rgba(255,255,255,0.1);}
+    .section p{font-family:'Spectral',serif;font-size:0.95rem;line-height:1.9;color:var(--text-muted);margin-bottom:1rem;}
+    .section p:last-child{margin-bottom:0;}
+    .section.dark p{color:rgba(255,255,255,0.6);}
+    .spacer{height:2rem;}
+
+    /* ── KEY METRICS ── */
+    .metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:1.4rem;}
+    .metric-card{background:var(--cream-dark);border:1px solid var(--border);padding:1.3rem;}
+    .metric-label{font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;}
+    .metric-value{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:300;color:var(--navy);line-height:1.1;margin-bottom:0.3rem;}
+    .metric-desc{font-family:'DM Mono',monospace;font-size:0.61rem;letter-spacing:0.06em;color:var(--text-muted);line-height:1.5;}
+
+    /* ── FORMULA BLOCK ── */
+    .formula-block{background:var(--cream-dark);border:1px solid var(--border);padding:0.7rem 1.1rem;font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--navy);letter-spacing:0.04em;line-height:1.9;margin:0.8rem 0;}
+    .formula-note{font-family:'DM Mono',monospace;font-size:0.63rem;color:var(--text-muted);letter-spacing:0.06em;margin-top:0.3rem;}
+
+    /* ── LINKAGE CARDS ── */
+    .linkage-list{display:flex;flex-direction:column;gap:0.8rem;margin-top:1.2rem;}
+    .linkage-item{border-left:3px solid var(--border);padding:0.9rem 1.2rem;background:var(--cream-dark);}
+    .linkage-item.selected{border-left-color:var(--gold);}
+    .linkage-name{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--navy);margin-bottom:0.3rem;display:flex;align-items:center;gap:0.5rem;}
+    .linkage-desc{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.05em;color:var(--text-muted);line-height:1.65;}
+
+    /* ── INDEX CARDS (2 col) ── */
+    .index-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;margin-top:1.2rem;}
+    .index-card{background:var(--cream-dark);border:1px solid var(--border);padding:1.1rem 1.2rem;}
+    .index-card.selected{border-color:var(--gold);background:#fdf9f3;}
+    .index-card-name{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--navy);margin-bottom:0.3rem;}
+    .index-card-body{font-family:'DM Mono',monospace;font-size:0.66rem;letter-spacing:0.05em;color:var(--text-muted);line-height:1.65;}
+
+    /* ── PIPELINE STEPS ── */
+    .pipeline{display:flex;flex-direction:column;gap:0;}
+    .pipeline-step{display:flex;gap:1.2rem;align-items:flex-start;padding:0.9rem 0;border-bottom:1px solid var(--border);}
+    .pipeline-step:last-child{border-bottom:none;}
+    .step-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--navy);color:white;font-family:'DM Mono',monospace;font-size:0.65rem;display:flex;align-items:center;justify-content:center;margin-top:0.1rem;}
+    .step-body{font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.05em;color:var(--text-muted);line-height:1.7;}
+    .step-body strong{color:var(--navy);font-weight:500;}
+
+    /* ── TABLE ── */
+    .data-table{width:100%;border-collapse:collapse;font-family:'DM Mono',monospace;font-size:0.74rem;margin-top:1rem;}
+    .data-table thead tr{border-bottom:2px solid var(--navy);}
+    .data-table th{text-align:left;padding:0.5rem 0.8rem;font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);font-weight:400;}
+    .data-table td{padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);}
+    .data-table td.lbl{font-weight:400;color:var(--navy);}
+    .data-table tr:hover td{background:var(--cream);}
+    .td-pos{color:#2a5c3e;font-weight:500;}
+    .td-neg{color:#7a1f1f;}
+    .td-opt{background:#f0f7f3;}
+    .td-opt td, tr.td-opt td{color:#1a4a2e;}
+
+    /* ── RESULT COMPARISON ── */
+    .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.2rem;}
+    .compare-card{border:1px solid var(--border);padding:1.1rem 1.2rem;}
+    .compare-card.better{border-color:#2a5c3e;background:#f6faf7;}
+    .compare-label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;}
+    .compare-label.better{color:#2a5c3e;}
+    .compare-value{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--navy);margin-bottom:0.3rem;}
+    .compare-note{font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--text-muted);line-height:1.6;}
+
+    /* ── INSIGHT BOX ── */
+    .insight{background:var(--cream-dark);border-left:3px solid var(--gold);padding:0.9rem 1.2rem;margin-top:1.2rem;font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.05em;color:var(--text-muted);line-height:1.7;}
+    .insight strong{color:var(--navy);}
+
+    /* ── TAG ── */
+    .tag{display:inline-block;font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;background:var(--gold);color:var(--navy);padding:0.18rem 0.55rem;border-radius:2px;margin-left:0.4rem;vertical-align:middle;}
+
+    /* ── CONCLUSION ── */
+    .conclusion-box{background:var(--navy);padding:2.2rem 2.4rem;margin-top:0;}
+    .conclusion-box h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:var(--gold);margin-bottom:1.2rem;}
+    .conclusion-box ul{list-style:none;padding:0;}
+    .conclusion-box li{font-family:'DM Mono',monospace;font-size:0.71rem;letter-spacing:0.05em;color:rgba(255,255,255,0.65);padding:0.55rem 0;border-bottom:1px solid rgba(255,255,255,0.08);line-height:1.7;}
+    .conclusion-box li:last-child{border-bottom:none;}
+    .conclusion-box li::before{content:'→  ';color:var(--gold);}
+
+    /* ── FOOTNOTE ── */
+    .footnote{font-family:'DM Mono',monospace;font-size:0.59rem;letter-spacing:0.08em;color:var(--text-muted);margin-top:0.7rem;line-height:1.6;}
+    .page-footnote{font-family:'DM Mono',monospace;font-size:0.59rem;letter-spacing:0.1em;color:var(--text-muted);text-align:right;margin-top:2rem;padding-top:1rem;border-top:1px solid var(--border);}
+  </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <p class="header-tag">IX0223 · TIP Taiwan Gender Equality Index</p>
+  <h1>Clustering Stability Analysis<br>of the Gender Equality Evaluation Model</h1>
+  <p style="margin-top:0.6rem;">Hierarchical Clustering · Confusion Matrix · F-measure</p>
+  <p class="header-universe">TWSE-listed &amp; TPEx-listed Companies · Taiwan · Review Cycles 2016/12 – 2021/12 · Published 2023/10</p>
+</header>
+
+<!-- ═══ TOC ═══ -->
+<nav class="toc-bar">
+  <a href="#abstract">Abstract</a>
+  <a href="#methods">Methods</a>
+  <a href="#stability-metric">Stability Metric</a>
+  <a href="#results">Results</a>
+  <a href="#conclusion">Conclusion</a>
+</nav>
+
+<main>
+
+  <!-- ══════════════════════════════════════
+       ABSTRACT
+  ══════════════════════════════════════ -->
+  <div id="abstract" class="section accent">
+    <div class="section-tag">01 · Overview</div>
+    <h2>Abstract</h2>
+    <p class="subtitle">Research Background &amp; Objective</p>
+    <p>
+      The Gender Equality Evaluation Model groups TWSE-listed and TPEx-listed companies by female workforce structure using hierarchical clustering, enabling fair comparison of gender-related performance indicators within each peer group. As the annual number of companies submitting sustainability reports grows, new observations are introduced into each review cycle, which can shift cluster assignments and undermine the model's consistency.
+    </p>
+    <p>
+      This study systematically evaluates which algorithmic configurations best preserve year-over-year clustering stability. Five linkage methods, three cluster validity indices, two outlier detection approaches, and varying cluster count constraints are compared across six annual review cycles (2016–2021) using F-measure derived from confusion matrices as the primary stability metric.
+    </p>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Optimal Linkage</div>
+        <div class="metric-value">Ward's</div>
+        <div class="metric-desc">D2 variant · Maximises within-cluster homogeneity at each merge step</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Validity Index</div>
+        <div class="metric-value">Dunn</div>
+        <div class="metric-desc">No averaging in formula · Most stable cluster-count ordering across years</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Cluster Range</div>
+        <div class="metric-value">4 – 9</div>
+        <div class="metric-desc">Adjusted F-measure 20.65 · Lowest year-to-year SD of 0.030</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Outlier Detection</div>
+        <div class="metric-value">IQR</div>
+        <div class="metric-desc">Box-plot method · All configurations reach clustering goal</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Review Period</div>
+        <div class="metric-value">6 yrs</div>
+        <div class="metric-desc">2016/12 – 2021/12 · Sample count: 184 → 445 companies</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Best Adj. F-measure</div>
+        <div class="metric-value">20.65</div>
+        <div class="metric-desc">Ward.D2-Dunn · cluster range 4–9 · highest in all tested configurations</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-connector"><span>↓</span></div>
+
+  <!-- ══════════════════════════════════════
+       RESEARCH METHODS
+  ══════════════════════════════════════ -->
+  <div id="methods" class="section">
+    <div class="section-tag">02 · Research Methods</div>
+    <h2>Hierarchical Clustering</h2>
+    <p class="subtitle">Framework Overview · Configuration Variables</p>
+    <p>
+      Hierarchical clustering builds a dendrogram by iteratively merging the closest pair of clusters until all observations form a single group. The female employee ratio (averaged over the prior two years) serves as the sole clustering variable. This study varies two types of conditions — the linkage method and the cluster validity index — to identify the configuration that produces the most consistent cluster assignments across annual review cycles.
+    </p>
+    <p>
+      After determining the best algorithmic setup, additional variables are tested in sequence: whether to apply an industry-based split-group pre-processing step, whether to compress outlier values, the choice of outlier detection method, and the upper/lower bounds on the number of clusters. Each variable's impact on stability is evaluated independently.
+    </p>
+  </div>
+
+  <!-- 2-1 Linkage -->
+  <div class="section">
+    <div class="section-tag">02.1 · Inter-cluster Distance</div>
+    <h2>Linkage Methods</h2>
+    <p class="subtitle">Five methods tested · Euclidean distance as base measure</p>
+    <div class="linkage-list">
+      <div class="linkage-item">
+        <div class="linkage-name">Single-linkage</div>
+        <div class="linkage-desc">Distance between clusters = distance between their two closest points. Prone to chaining; produces highly uneven cluster sizes.</div>
+        <div class="formula-block" style="margin-top:0.5rem;">d(Cᵢ, Cⱼ) = min<sub>a∈Cᵢ, b∈Cⱼ</sub> d(a, b)</div>
+      </div>
+      <div class="linkage-item">
+        <div class="linkage-name">Complete-linkage</div>
+        <div class="linkage-desc">Distance between clusters = distance between their two farthest points. Produces compact, roughly equal-sized clusters.</div>
+        <div class="formula-block" style="margin-top:0.5rem;">d(Cᵢ, Cⱼ) = max<sub>a∈Cᵢ, b∈Cⱼ</sub> d(a, b)</div>
+      </div>
+      <div class="linkage-item">
+        <div class="linkage-name">Average-linkage (UPGMA)</div>
+        <div class="linkage-desc">Distance between clusters = average of all pairwise point distances across the two clusters.</div>
+        <div class="formula-block" style="margin-top:0.5rem;">d(Cᵢ, Cⱼ) = (1 / |Cᵢ||Cⱼ|) · Σ d(a, b)&nbsp;&nbsp;for a∈Cᵢ, b∈Cⱼ</div>
+      </div>
+      <div class="linkage-item">
+        <div class="linkage-name">Centroid Method</div>
+        <div class="linkage-desc">Distance between clusters = distance between their respective centroids. Can invert the dendrogram order in edge cases.</div>
+        <div class="formula-block" style="margin-top:0.5rem;">d(Cᵢ, Cⱼ) = d(μ(Cᵢ), μ(Cⱼ))</div>
+      </div>
+      <div class="linkage-item selected">
+        <div class="linkage-name">Ward's Method (D2) <span class="tag">Selected</span></div>
+        <div class="linkage-desc">Distance between clusters = increase in total within-cluster sum of squared distances upon merging. Maximises intra-cluster homogeneity at each step; produces the most evenly distributed clusters in this study.</div>
+        <div class="formula-block" style="margin-top:0.5rem;">d(Cᵢ, Cⱼ) = Σ ‖a − μ(Cᵢ∪Cⱼ)‖²&nbsp;&nbsp;for a∈Cᵢ∪Cⱼ</div>
+        <div class="formula-note">μ(Cᵢ∪Cⱼ): centroid of the merged cluster</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2-2 Validity Indices -->
+  <div class="section">
+    <div class="section-tag">02.2 · Cluster Validity Indices</div>
+    <h2>Determining the Optimal Number of Clusters</h2>
+    <p class="subtitle">Objective · Minimise intra-cluster variance · Maximise inter-cluster separation</p>
+    <p>At each review cycle, a validity index evaluates candidate cluster counts and selects the partition with the best compactness-separation trade-off. The index's behaviour under varying cluster counts directly affects how consistently the same number of clusters is selected year over year.</p>
+    <div class="index-grid">
+      <div class="index-card">
+        <div class="index-card-name">Average Silhouette</div>
+        <div class="index-card-body">Combines cohesion and separation per point. Higher = better. Uses averaging, making it sensitive to marginal cluster boundaries.</div>
+        <div class="formula-block" style="font-size:0.7rem;margin-top:0.6rem;">s(i) = (b(i)−a(i)) / max(a(i), b(i))</div>
+      </div>
+      <div class="index-card">
+        <div class="index-card-name">Davies-Bouldin Index</div>
+        <div class="index-card-body">Ratio of intra-cluster scatter to inter-cluster distance. Lower = better. Also averaging-based; shares similar instabilities with Silhouette.</div>
+        <div class="formula-block" style="font-size:0.7rem;margin-top:0.6rem;">DB = (1/k) Σ max<sub>j≠i</sub> (sᵢ+sⱼ)/dᵢⱼ</div>
+      </div>
+      <div class="index-card selected">
+        <div class="index-card-name">Dunn Index <span class="tag">Selected</span></div>
+        <div class="index-card-body">Ratio of minimum inter-cluster distance to maximum intra-cluster diameter. Higher = better. Contains no averaging — produces the most stable cluster-count ordering across years.</div>
+        <div class="formula-block" style="font-size:0.7rem;margin-top:0.6rem;">DI = min δ(Cᵢ,Cⱼ) / max Δₙ</div>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>Why Dunn Index is more stable:</strong> Silhouette and Davies-Bouldin both use averaging in their formulas. When a cluster count shifts by one, the merged clusters can produce a noticeably worse index score, causing the optimal cluster count ordering to change significantly year to year — especially under Single-linkage. Dunn Index avoids this averaging artifact, yielding a more consistent priority ordering of candidate cluster counts across review cycles.
+    </div>
+  </div>
+
+  <!-- 2-3 Split-group Method -->
+  <div class="section">
+    <div class="section-tag">02.3 · Pre-processing Step</div>
+    <h2>Split-group Method</h2>
+    <p class="subtitle">Industry-level Segmentation · Separating Structurally Different Sub-groups</p>
+    <p>
+      Within each TWSE industry category, companies may have very different female workforce structures. For example, the transportation industry includes both shipping companies (typically male-dominated) and aviation companies (higher female ratio). Clustering them together without separation would undermine the fairness of subsequent indicator comparisons.
+    </p>
+    <p>
+      The split-group method addresses this by re-clustering within each industry using female employee ratio, before the main merge-group step. Single-linkage is used for this pre-processing stage, as it produces the most heterogeneous cluster sizes and most clearly separates sub-groups with divergent female workforce compositions.
+    </p>
+    <p>
+      The split step is triggered when an industry's internal female ratio distribution exceeds a dispersion threshold. Splitting continues until each resulting sub-cluster meets internal homogeneity criteria — assessed by sample size requirements and the absence of outliers detected via the IQR box-plot method. Sub-clusters containing only a single company are exempt from further splitting.
+    </p>
+    <div class="insight">
+      <strong>Note on research findings:</strong> Although the split-group step is theoretically well-motivated, analysis shows that removing it actually improves clustering goal attainment and F-measure stability. Without the split step, companies can be grouped freely across industry boundaries by female workforce similarity, yielding more flexible and internally consistent clusters. See Section 04.1 for the full comparison.
+    </div>
+  </div>
+
+  <!-- 2-4 Clustering Pipeline -->
+  <div class="section">
+    <div class="section-tag">02.4 · Clustering Pipeline</div>
+    <h2>Merge-group Method</h2>
+    <p class="subtitle">Aggregation Process · Grouping Companies by Female Workforce Profile</p>
+    <p>
+      The final clustering pipeline aggregates companies directly by their female employee ratio. Candidate cluster counts are evaluated from best to worst according to the selected validity index, and the first count that satisfies the internal quality criteria is adopted as the final partition for that review cycle. The cluster count is constrained within a defined minimum and maximum range; if the quality criteria cannot be fully satisfied, the constraint boundary is used as a fallback.
+    </p>
+    <p>
+      Quality criteria assess within-cluster sample sufficiency and internal homogeneity. The specific thresholds — including minimum cluster size and outlier tolerance — are calibrated to ensure each cluster contains a representative sample for subsequent indicator comparisons.
+    </p>
+    <div class="insight">
+      <strong>Key design decision:</strong> The cluster count constraint range is one of the most influential parameters for long-term stability. Expanding the upper bound beyond the optimal range was found to reduce year-over-year F-measure consistency. The final configuration constrains the range to 4–9 clusters.
+    </div>
+  </div>
+
+  <div class="flow-connector"><span>↓</span></div>
+
+  <!-- ══════════════════════════════════════
+       STABILITY METRIC
+  ══════════════════════════════════════ -->
+  <div id="stability-metric" class="section accent">
+    <div class="section-tag">03 · Stability Metric</div>
+    <h2>Measuring Cluster Consistency with Confusion Matrix &amp; F-measure</h2>
+    <p class="subtitle">Law of Comparative Judgment · Pairwise Clustering · Precision · Recall · F-measure (β=1)</p>
+    <p>
+      To quantify year-over-year clustering stability, this study treats the current cycle's partition as the <em>predicted clustering</em> (P) and the prior cycle's partition as the <em>gold standard</em> (Q). Stability is measured by how closely P reproduces Q for the subset of companies that participated in both review cycles.
+    </p>
+
+    <div class="insight" style="margin-bottom:1.2rem;">
+      <strong>Why confusion matrix via pairwise comparisons?</strong> Based on the Law of Comparative Judgment, stability is assessed through <em>pairs of clusterings</em> rather than direct label matching. For every pair of companies in the overlapping sample, the question is: were they assigned to the same cluster in both P and Q, or did their grouping change? This pairwise approach avoids the label-alignment problem inherent in hierarchical clustering, where cluster identifiers are arbitrary and change across cycles. The confusion matrix is then built from these pairwise outcomes, and F-measure is used to quantify how well the predicted clustering (P) hits the gold-standard clustering (Q).
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.4rem 0;">
+      <div style="background:var(--cream-dark);border:1px solid var(--border);padding:1.1rem 1.2rem;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;">Confusion Matrix Mapping</div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-muted);line-height:1.9;">
+          <span style="color:var(--navy);font-weight:500;">TP (a):</span> pair grouped together in both P and Q<br>
+          <span style="color:var(--navy);font-weight:500;">FP (c):</span> together in P, but separated in Q<br>
+          <span style="color:var(--navy);font-weight:500;">FN (b):</span> separated in P, but together in Q<br>
+          <span style="color:var(--navy);font-weight:500;">TN (d):</span> separated in both P and Q
+        </div>
+      </div>
+      <div style="background:var(--cream-dark);border:1px solid var(--border);padding:1.1rem 1.2rem;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;">Metrics</div>
+        <div class="formula-block" style="margin:0 0 0.4rem;">Precision = a / (a + c)</div>
+        <div class="formula-block" style="margin:0 0 0.4rem;">Recall = a / (a + b)</div>
+        <div class="formula-block" style="margin:0;">F-measure = 2a / (2a + b + c)</div>
+      </div>
+    </div>
+
+    <p>
+      <strong>Why not Precision or Recall alone?</strong> Precision and Recall capture different aspects of clustering similarity, and each alone leads to a degenerate solution in this context.
+    </p>
+    <p>
+      Maximising Precision alone — where every predicted pair (P) also appears in Q — encourages the algorithm to split clusters into smaller, more homogeneous sub-groups. While each predicted pairing is "safe," many pairs from Q are never predicted, resulting in high FN. In practice, this means some clusters will end up with too few members, reducing their representativeness for subsequent indicator comparisons.
+    </p>
+    <p>
+      Maximising Recall alone — where every gold-standard pair (Q) is captured in P — pushes the algorithm to merge clusters aggressively. Although no pair from Q is missed, many predicted pairs do not correspond to Q (high FP). This leads to oversized, heterogeneous clusters where companies with very different female workforce profiles are grouped together, undermining the fairness of comparisons.
+    </p>
+    <p>
+      F-measure (β=1) balances Precision and Recall equally. It rewards configurations that maintain both the right number of members per cluster and meaningful internal similarity — the two properties most critical for stable, fair indicator evaluation across review cycles. An <strong>Adjusted F-measure</strong> = Average F-measure ÷ SD F-measure is further used to reward both high average stability and low year-to-year volatility jointly.
+    </p>
+  </div>
+
+  <div class="flow-connector"><span>↓</span></div>
+
+  <!-- ══════════════════════════════════════
+       RESULTS
+  ══════════════════════════════════════ -->
+  <div id="results" class="section">
+    <div class="section-tag">04 · Results</div>
+    <h2>Stability Analysis Across Configurations</h2>
+    <p class="subtitle">Four Variables Tested · Impact on F-measure · 2016–2021</p>
+    <p>
+      The following analyses evaluate each variable in sequence, holding other conditions constant. The baseline for comparison is the configuration without a split-group step, without outlier compression, using IQR-based outlier detection, and with cluster count constrained to 4–10.
+    </p>
+  </div>
+
+  <!-- R1: Split-group -->
+  <div class="section">
+    <div class="section-tag">04.1 · Variable: Split-group Step</div>
+    <h2>Impact of the Split-group Pre-processing Step</h2>
+    <p class="subtitle">With vs. Without Industry-level Segmentation</p>
+    <p>
+      The split-group method first segments companies within each TWSE industry by female employee ratio before the main clustering step. While it helps separate structurally different sub-industries, it also restricts how companies can be re-grouped in the merge step — they can only join clusters from their own split industry partition.
+    </p>
+    <p>
+      Removing the split-group step allows the algorithm to cluster all companies directly by their female employee ratio, without industry constraints. This increased flexibility lets the algorithm find more natural groupings across industry boundaries.
+    </p>
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-label">With Split-group</div>
+        <div class="compare-value">Avg. F = 0.596</div>
+        <div class="compare-note">All 12 configurations fail to fully satisfy quality criteria before hitting the fallback cluster-count boundary. Remaining intra-cluster outliers indicate clustering goal is not fully achieved.</div>
+      </div>
+      <div class="compare-card better">
+        <div class="compare-label better">Without Split-group ★ Selected</div>
+        <div class="compare-value">Avg. F = 0.628</div>
+        <div class="compare-note">All 12 configurations satisfy quality criteria before the fallback boundary. Clustering goal fully achieved; intra-cluster homogeneity is higher and more reliable across years.</div>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>Conclusion:</strong> Removing the split-group step improves both clustering validity and F-measure stability. Subsequent analyses use the no-split-group configuration as baseline.
+    </div>
+  </div>
+
+  <!-- R2: Outlier compression -->
+  <div class="section">
+    <div class="section-tag">04.2 · Variable: Outlier Compression</div>
+    <h2>Impact of Compressing Outlier Values</h2>
+    <p class="subtitle">Winsorising IQR-detected Outliers to Boundary Values</p>
+    <p>
+      Outlier compression winsorises companies whose female employee ratio is identified as an outlier by the IQR box-plot method — replacing extreme values with the corresponding boundary (Q1 − 1.5×IQR or Q3 + 1.5×IQR) before clustering, rather than excluding them.
+    </p>
+    <div class="compare-grid">
+      <div class="compare-card better">
+        <div class="compare-label better">With Compression</div>
+        <div class="compare-value">Avg. F = 0.630&nbsp;·&nbsp;Adj. F = 7.97</div>
+        <div class="compare-note">Marginally higher average F-measure and adjusted F-measure compared to no compression.</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-label">Without Compression (Baseline)</div>
+        <div class="compare-value">Avg. F = 0.628&nbsp;·&nbsp;Adj. F = 7.83</div>
+        <div class="compare-note">Difference is minimal; both achieve the clustering goal across all configurations.</div>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>Conclusion:</strong> Outlier compression has only a marginal effect on clustering stability. The improvement does not justify the added complexity; the no-compression baseline is retained.
+    </div>
+  </div>
+
+  <!-- R3: Outlier detection -->
+  <div class="section">
+    <div class="section-tag">04.3 · Variable: Outlier Detection Method</div>
+    <h2>IQR Box-plot vs. Standard Deviation</h2>
+    <p class="subtitle">Comparing Two Outlier Identification Approaches</p>
+    <p>
+      Two outlier detection rules are compared: the IQR box-plot method (values beyond Q1 − 1.5×IQR or Q3 + 1.5×IQR) and a standard-deviation threshold (values beyond ±2 SD from the mean).
+    </p>
+    <div class="compare-grid">
+      <div class="compare-card better">
+        <div class="compare-label better">IQR Box-plot ★ Selected</div>
+        <div class="compare-value">Avg. F = 0.628&nbsp;·&nbsp;Adj. F = 7.83</div>
+        <div class="compare-note">All 12 configurations achieve the clustering goal. More robust to asymmetric distributions common in female employee ratio data.</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-label">±2 SD Threshold</div>
+        <div class="compare-value">Avg. F = 0.592&nbsp;·&nbsp;Adj. F = 7.36</div>
+        <div class="compare-note">3 of 12 configurations (all centroid-based) fail to reach the clustering goal. Average F-measure drops and SD F-measure increases substantially.</div>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>Conclusion:</strong> The IQR method is significantly more reliable. The SD-based threshold is too lenient for this dataset — it admits more extreme values into clusters, causing some configurations to fail quality criteria. IQR is adopted as the standard for all subsequent analyses.
+    </div>
+  </div>
+
+  <!-- R4: Cluster count -->
+  <div class="section">
+    <div class="section-tag">04.4 · Variable: Cluster Count Range</div>
+    <h2>Impact of Maximum &amp; Minimum Cluster Count</h2>
+    <p class="subtitle">Constraining the Search Space · Kendall's Tau Stability Analysis</p>
+    <p>
+      The cluster count constraint determines the range within which the validity index selects the optimal number of clusters. A wider range gives more flexibility but can lead to large year-to-year swings in cluster count, destabilising F-measure. A narrower range limits flexibility but improves consistency.
+    </p>
+    <p>
+      Kendall's tau is used to measure the correlation between validity index scores and cluster count orderings across consecutive review cycles. A high Kendall's tau means the priority ordering of candidate cluster counts is consistent year over year — the algorithm reliably converges to the same number of clusters.
+    </p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Period</th><th>4–7</th><th>4–8</th><th>4–9 ★</th><th>4–10</th><th>4–11</th><th>4–12</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="lbl">2016/12</td><td>0.634</td><td>0.640</td><td class="td-pos">0.655</td><td>0.654</td><td>0.667</td><td>0.667</td></tr>
+        <tr><td class="lbl">2017/12</td><td>0.741</td><td>0.665</td><td class="td-pos">0.640</td><td>0.615</td><td>0.605</td><td>0.605</td></tr>
+        <tr><td class="lbl">2018/12</td><td>0.789</td><td>0.789</td><td class="td-pos">0.607</td><td>0.663</td><td>0.652</td><td>0.652</td></tr>
+        <tr><td class="lbl">2019/12</td><td>0.780</td><td>0.780</td><td class="td-pos">0.623</td><td>0.685</td><td>0.685</td><td>0.685</td></tr>
+        <tr><td class="lbl">2020/12</td><td>0.784</td><td>0.784</td><td class="td-pos">0.568</td><td>0.568</td><td>0.568</td><td>0.625</td></tr>
+        <tr><td class="lbl">2021/12</td><td>0.623</td><td>0.623</td><td class="td-pos">0.623</td><td>0.624</td><td>0.623</td><td>0.475</td></tr>
+        <tr style="border-top:2px solid var(--navy);">
+          <td class="lbl">Avg. F-measure</td><td>0.725</td><td>0.713</td><td class="td-pos">0.619</td><td>0.635</td><td>0.633</td><td>0.618</td>
+        </tr>
+        <tr>
+          <td class="lbl">SD F-measure</td><td>0.077</td><td>0.079</td><td class="td-pos"><strong>0.030</strong></td><td>0.042</td><td>0.043</td><td>0.076</td>
+        </tr>
+        <tr class="td-opt">
+          <td class="lbl">Adj. F-measure</td><td>9.43</td><td>9.05</td><td class="td-pos"><strong>20.65</strong></td><td>15.28</td><td>14.72</td><td>8.16</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="footnote">★ Ward.D2-Dunn configuration. Adjusted F-measure = Average F-measure / SD F-measure.</p>
+
+    <div class="insight" style="margin-top:1.2rem;">
+      <strong>Conclusion:</strong> The 4–9 range achieves by far the lowest SD (0.030) and highest adjusted F-measure (20.65). While 4–7 and 4–8 have higher raw average F-measures, their larger SDs indicate inconsistent year-to-year performance. The 4–9 constraint is adopted as the final configuration.
+    </div>
+  </div>
+
+  <!-- R5: Full config table -->
+  <div class="section">
+    <div class="section-tag">04.5 · All Configurations · Summary</div>
+    <h2>F-measure Results Across All 12 Configurations</h2>
+    <p class="subtitle">No split-group · No outlier compression · IQR outlier detection · Cluster range 4–10 baseline</p>
+    <table class="data-table">
+      <thead>
+        <tr><th>Configuration</th><th>Avg. F</th><th>SD F</th><th>Adj. F-measure</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="lbl">average-db</td><td>0.565</td><td>0.074</td><td>7.67</td></tr>
+        <tr><td class="lbl">average-dunn</td><td>0.599</td><td>0.085</td><td>7.06</td></tr>
+        <tr><td class="lbl">average-silhouette</td><td>0.645</td><td>0.080</td><td>8.10</td></tr>
+        <tr><td class="lbl">centroid-db</td><td>0.755</td><td>0.113</td><td>6.66</td></tr>
+        <tr><td class="lbl">centroid-dunn</td><td>0.667</td><td>0.092</td><td>7.25</td></tr>
+        <tr><td class="lbl">centroid-silhouette</td><td>0.676</td><td>0.080</td><td>8.45</td></tr>
+        <tr><td class="lbl">complete-db</td><td>0.585</td><td>0.078</td><td>7.48</td></tr>
+        <tr><td class="lbl">complete-dunn</td><td>0.591</td><td>0.113</td><td>5.25</td></tr>
+        <tr><td class="lbl">complete-silhouette</td><td>0.553</td><td>0.107</td><td>5.15</td></tr>
+        <tr><td class="lbl">ward.D2-db</td><td>0.641</td><td>0.063</td><td>10.18</td></tr>
+        <tr class="td-opt"><td class="lbl">ward.D2-dunn <span class="tag">Optimal</span></td><td class="td-pos">0.635</td><td class="td-pos">0.042</td><td class="td-pos"><strong>15.28</strong></td></tr>
+        <tr><td class="lbl">ward.D2-silhouette</td><td>0.628</td><td>0.116</td><td>5.43</td></tr>
+      </tbody>
+    </table>
+    <p class="footnote">* Baseline uses 4–10 range. The ward.D2-dunn adjusted F-measure improves further to 20.65 when the range is narrowed to 4–9.</p>
+  </div>
+
+  <div class="flow-connector"><span>↓</span></div>
+
+  <!-- ══════════════════════════════════════
+       CONCLUSION
+  ══════════════════════════════════════ -->
+  <div id="conclusion" class="section dark">
+    <div class="section-tag" style="color:rgba(184,160,106,0.7);">05 · Conclusion</div>
+    <h2>Optimal Configuration &amp; Research Summary</h2>
+    <p class="subtitle">Synthesising Findings Across All Four Variables</p>
+    <p>
+      Each of the four methodological variables — split-group step, outlier compression, outlier detection method, and cluster count range — was tested independently. Their combined effect points clearly to a single optimal configuration.
+    </p>
+    <p>
+      The split-group pre-processing step, despite its intuitive appeal for handling industry heterogeneity, restricts the algorithm's flexibility and consistently fails to achieve full clustering quality criteria. Removing it allows companies to be grouped purely by female workforce similarity across all industries, yielding better-defined and more stable clusters.
+    </p>
+    <p>
+      Among the 12 linkage–index combinations, Ward's method paired with the Dunn Index produces the highest adjusted F-measure under all tested cluster count ranges. Ward's method constructs balanced, homogeneous clusters; Dunn Index avoids the averaging instabilities that cause Silhouette and Davies-Bouldin to produce erratic cluster-count orderings — especially under Single-linkage.
+    </p>
+    <p>
+      Outlier detection via the IQR box-plot method is more robust than a standard-deviation threshold for this dataset. The SD method is too permissive, admitting asymmetrically extreme female ratio values into clusters and causing some configurations to fail internal quality checks.
+    </p>
+    <p>
+      Finally, constraining the cluster count to 4–9 achieves the optimal balance of consistency and validity. The 4–9 range yields the lowest year-to-year SD (0.030) and highest adjusted F-measure (20.65) — far exceeding any wider range, where the additional flexibility introduces instability without meaningfully improving average F-measure.
+    </p>
+  </div>
+
+  <div class="conclusion-box">
+    <h3>Final Configuration Summary</h3>
+    <ul>
+      <li>Cluster companies directly by female employee ratio — no TWSE industry split-group pre-processing</li>
+      <li>Linkage method: <strong style="color:white;">Ward's (D2)</strong> — maximises within-cluster homogeneity at each merge; most stable under varying sample sizes</li>
+      <li>Cluster validity index: <strong style="color:white;">Dunn Index</strong> — no averaging in formula; produces the most consistent cluster-count priority ordering year over year</li>
+      <li>Outlier detection: <strong style="color:white;">IQR box-plot method</strong> — more robust to the asymmetric distribution of female employee ratios than ±2 SD</li>
+      <li>Cluster count constraint: <strong style="color:white;">minimum 4, maximum 9</strong> — lowest year-to-year SD of 0.030; adjusted F-measure of 20.65 across 2016–2021</li>
+    </ul>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- ══════════════════════════════════════
+       REFERENCES
+  ══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-tag">06 · References</div>
+    <h2>Bibliography</h2>
+    <p class="subtitle">Literature Cited</p>
+    <div style="display:flex;flex-direction:column;gap:1rem;margin-top:0.4rem;">
+      <div style="display:flex;gap:1rem;align-items:flex-start;">
+        <div style="flex-shrink:0;font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--gold);font-weight:500;min-width:1.4rem;">[1]</div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.04em;color:var(--text-muted);line-height:1.8;">
+          Bolshakova, N., &amp; Azuaje, F. (2003). Cluster validation techniques for genome expression data. <em style="font-style:italic;color:var(--navy);">Signal Processing, 83</em>(4), 825–833. https://doi.org/10.1016/S0165-1684(02)00475-9
+        </div>
+      </div>
+      <div style="display:flex;gap:1rem;align-items:flex-start;">
+        <div style="flex-shrink:0;font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--gold);font-weight:500;min-width:1.4rem;">[2]</div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.04em;color:var(--text-muted);line-height:1.8;">
+          Dice, L. R. (1945). Measures of the amount of ecologic association between species. <em style="font-style:italic;color:var(--navy);">Ecology, 26</em>(3), 297–302. https://doi.org/10.2307/1932409
+        </div>
+      </div>
+      <div style="display:flex;gap:1rem;align-items:flex-start;">
+        <div style="flex-shrink:0;font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--gold);font-weight:500;min-width:1.4rem;">[3]</div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.04em;color:var(--text-muted);line-height:1.8;">
+          Müllner, D. (2011). Modern hierarchical, agglomerative clustering algorithms. <em style="font-style:italic;color:var(--navy);">arXiv preprint arXiv:1109.2378.</em> https://doi.org/10.48550/arXiv.1109.2378
+        </div>
+      </div>
+      <div style="display:flex;gap:1rem;align-items:flex-start;">
+        <div style="flex-shrink:0;font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--gold);font-weight:500;min-width:1.4rem;">[4]</div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.04em;color:var(--text-muted);line-height:1.8;">
+          Pfitzner, D., Leibbrandt, R., &amp; Powers, D. (2009). Characterization and evaluation of similarity measures for pairs of clusterings. <em style="font-style:italic;color:var(--navy);">Knowledge and Information Systems, 19</em>(3), 361–394. https://doi.org/10.1007/s10115-008-0150-6
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="page-footnote">Research &amp; Design: Sheng-Hung Wang (Hank) &nbsp;·&nbsp; October 2023 &nbsp;·&nbsp; TIP Taiwan Gender Equality Index (IX0223)</p>
+
+</main>
+</body>
+</html>
