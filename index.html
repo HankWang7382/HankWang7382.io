@@ -350,9 +350,9 @@
 
     .about-grid {
       display: grid;
-      grid-template-columns: 1fr 1.4fr;
-      gap: 5rem;
-      align-items: start;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      max-width: 860px;
     }
 
     .about-intro {
@@ -605,8 +605,6 @@
 
       section { padding: 4rem 1.5rem; }
 
-      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
-
       .exp-item { grid-template-columns: 1fr; gap: 1rem; }
 
       .projects-grid { grid-template-columns: 1fr; }
@@ -790,7 +788,8 @@
   <a href="#hero" class="nav-logo">Hank Wang</a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
-    <li><a href="#experience">Experience</a></li>
+    <li><a href="#experience">Work Experience</a></li>
+    <li><a href="#education">Education</a></li>
     <li><a href="#projects">Key Index Portfolio</a></li>
     <li class="nav-dropdown" id="nav-projects-dropdown"
         onmouseenter="openDropdown()"
@@ -920,7 +919,7 @@
 <section id="experience">
   <div class="section-header fade-up">
     <span class="section-num">02</span>
-    <h2 class="section-title">Experience</h2>
+    <h2 class="section-title">Work Experience</h2>
   </div>
 
   <div class="exp-item fade-up">
@@ -960,10 +959,54 @@
   </div>
 </section>
 
+<!-- EDUCATION -->
+<section id="education" style="background:var(--cream-dark);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="section-header fade-up">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Education</h2>
+  </div>
+
+  <div class="exp-item fade-up">
+    <div class="exp-meta">
+      <p class="exp-period">2015/09 — 2018/01</p>
+      <p class="exp-company">National Sun Yat-sen University</p>
+      <p class="exp-location">Kaohsiung, Taiwan</p>
+    </div>
+    <div>
+      <p class="exp-role">Master of Business Administration</p>
+      <p class="exp-desc">GPA 3.98 / 4.30. Awarded The Management Thesis Reward — Best Practice for thesis on retirement lifestyle design and sustainability target-date funds.</p>
+    </div>
+  </div>
+
+  <div class="exp-item fade-up">
+    <div class="exp-meta">
+      <p class="exp-period">2017/09 — 2018/01</p>
+      <p class="exp-company">Free University of Bolzano</p>
+      <p class="exp-location">Bolzano, Italy</p>
+    </div>
+    <div>
+      <p class="exp-role">Exchange Programme</p>
+      <p class="exp-desc">Exchange student in the Faculty of Economics and Management, with coursework focused on statistics.</p>
+    </div>
+  </div>
+
+  <div class="exp-item fade-up">
+    <div class="exp-meta">
+      <p class="exp-period">2007/09 — 2011/06</p>
+      <p class="exp-company">Feng Chia University</p>
+      <p class="exp-location">Taichung, Taiwan</p>
+    </div>
+    <div>
+      <p class="exp-role">Bachelor of Chemical Engineering</p>
+      <p class="exp-desc">Undergraduate training in chemical engineering, providing a rigorous analytical and quantitative foundation that underpins subsequent work in financial modelling and systematic index research.</p>
+    </div>
+  </div>
+</section>
+
 <!-- PROJECTS -->
 <section id="projects">
   <div class="section-header fade-up">
-    <span class="section-num">03</span>
+    <span class="section-num">04</span>
     <h2 class="section-title">Key Projects</h2>
   </div>
 
