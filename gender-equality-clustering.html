@@ -118,9 +118,101 @@
     .conclusion-box li:last-child{border-bottom:none;}
     .conclusion-box li::before{content:'→  ';color:var(--gold);}
 
+    /* ── TABLE WRAPPER ── */
+    .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+
     /* ── FOOTNOTE ── */
     .footnote{font-family:'DM Mono',monospace;font-size:0.59rem;letter-spacing:0.08em;color:var(--text-muted);margin-top:0.7rem;line-height:1.6;}
     .page-footnote{font-family:'DM Mono',monospace;font-size:0.59rem;letter-spacing:0.1em;color:var(--text-muted);text-align:right;margin-top:2rem;padding-top:1rem;border-top:1px solid var(--border);}
+
+    /* ══════════════════════════════════════
+       RWD · 平板 (max-width: 900px)
+    ══════════════════════════════════════ */
+    @media (max-width: 900px) {
+      header { padding: 2rem 2rem; }
+      header h1 { font-size: 1.8rem; }
+
+      .toc-bar { padding: 0.6rem 2rem; gap: 1.2rem; }
+
+      main { padding: 2rem 2rem 4rem; }
+
+      .metrics-grid { grid-template-columns: 1fr 1fr; }
+      .index-grid { grid-template-columns: 1fr 1fr; }
+      .compare-grid { grid-template-columns: 1fr 1fr; }
+
+      .data-table { font-size: 0.68rem; }
+      .data-table th { font-size: 0.54rem; padding: 0.45rem 0.6rem; }
+      .data-table td { padding: 0.45rem 0.6rem; }
+
+      .conclusion-box { padding: 1.8rem 2rem; }
+    }
+
+    /* ══════════════════════════════════════
+       RWD · 手機 (max-width: 600px)
+    ══════════════════════════════════════ */
+    @media (max-width: 600px) {
+      header { padding: 1.5rem 1.2rem; }
+      .header-tag { font-size: 0.72rem; letter-spacing: 0.14em; }
+      header h1 { font-size: 1.4rem; line-height: 1.3; }
+      header p { font-size: 0.58rem; }
+      header p.header-universe { font-size: 0.62rem; }
+
+      .toc-bar { padding: 0.5rem 1.2rem; gap: 0.8rem; overflow-x: auto; flex-wrap: nowrap; }
+      .toc-bar a { font-size: 0.56rem; white-space: nowrap; }
+
+      main { padding: 1.5rem 1.2rem 3rem; }
+
+      .section { padding: 1.4rem 1.2rem; }
+      .section h2 { font-size: 1.3rem; }
+      .section p { font-size: 0.88rem; }
+      .section-tag { font-size: 0.54rem; }
+      .section .subtitle { font-size: 0.58rem; }
+
+      .metrics-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+      .metric-value { font-size: 1.4rem; }
+      .metric-desc { font-size: 0.58rem; }
+
+      .index-grid { grid-template-columns: 1fr; }
+
+      .compare-grid { grid-template-columns: 1fr; }
+      .compare-value { font-size: 1.1rem; }
+
+      .linkage-desc { font-size: 0.64rem; }
+      .formula-block { font-size: 0.68rem; padding: 0.55rem 0.8rem; }
+
+      .insight { font-size: 0.66rem; padding: 0.8rem 1rem; }
+
+      .data-table { font-size: 0.6rem; }
+      .data-table th { font-size: 0.5rem; padding: 0.4rem 0.4rem; }
+      .data-table td { padding: 0.4rem 0.4rem; }
+
+      .conclusion-box { padding: 1.4rem 1.2rem; }
+      .conclusion-box h3 { font-size: 1.2rem; }
+      .conclusion-box li { font-size: 0.65rem; }
+
+      .page-footnote { text-align: left; }
+    }
+
+    /* ══════════════════════════════════════
+       RWD · 小手機 (max-width: 400px)
+    ══════════════════════════════════════ */
+    @media (max-width: 400px) {
+      header { padding: 1.2rem 1rem; }
+      header h1 { font-size: 1.2rem; }
+
+      main { padding: 1.2rem 1rem 2.5rem; }
+
+      .section { padding: 1.2rem 1rem; }
+      .section h2 { font-size: 1.15rem; }
+
+      .metrics-grid { grid-template-columns: 1fr; }
+      .metric-value { font-size: 1.3rem; }
+
+      .toc-bar { padding: 0.5rem 1rem; gap: 0.6rem; }
+
+      .data-table th { font-size: 0.46rem; padding: 0.35rem 0.3rem; }
+      .data-table td { padding: 0.35rem 0.3rem; font-size: 0.58rem; }
+    }
   </style>
 </head>
 <body>
@@ -459,6 +551,7 @@
       Kendall's tau is used to measure the correlation between validity index scores and cluster count orderings across consecutive review cycles. A high Kendall's tau means the priority ordering of candidate cluster counts is consistent year over year — the algorithm reliably converges to the same number of clusters.
     </p>
 
+    <div class="table-wrap">
     <table class="data-table">
       <thead>
         <tr>
@@ -483,6 +576,7 @@
         </tr>
       </tbody>
     </table>
+    </div>
     <p class="footnote">★ Ward.D2-Dunn configuration. Adjusted F-measure = Average F-measure / SD F-measure.</p>
 
     <div class="insight" style="margin-top:1.2rem;">
@@ -495,6 +589,7 @@
     <div class="section-tag">04.5 · All Configurations · Summary</div>
     <h2>F-measure Results Across All 12 Configurations</h2>
     <p class="subtitle">No split-group · No outlier compression · IQR outlier detection · Cluster range 4–10 baseline</p>
+    <div class="table-wrap">
     <table class="data-table">
       <thead>
         <tr><th>Configuration</th><th>Avg. F</th><th>SD F</th><th>Adj. F-measure</th></tr>
@@ -514,6 +609,7 @@
         <tr><td class="lbl">ward.D2-silhouette</td><td>0.628</td><td>0.116</td><td>5.43</td></tr>
       </tbody>
     </table>
+    </div>
     <p class="footnote">* Baseline uses 4–10 range. The ward.D2-dunn adjusted F-measure improves further to 20.65 when the range is narrowed to 4–9.</p>
   </div>
 
