@@ -244,10 +244,10 @@
     <h2>Abstract</h2>
     <p class="subtitle">Research Background &amp; Objective</p>
     <p>
-      The Gender Equality Evaluation Model groups TWSE-listed and TPEx-listed companies by female workforce structure using hierarchical clustering, enabling fair comparison of gender-related performance indicators within each peer group. As the annual number of companies submitting sustainability reports grows, new observations are introduced into each review cycle, which can shift cluster assignments and undermine the model's consistency.
+      The Gender Equality Evaluation Model classifies TWSE-listed and TPEx-listed companies into peer groups based on their female workforce structure, using hierarchical clustering to enable fair comparison of gender-related performance indicators. As more companies submit sustainability reports each year, new data points enter each review cycle, potentially altering cluster assignments and reducing the model's year-over-year consistency.
     </p>
     <p>
-      This study systematically evaluates which algorithmic configurations best preserve year-over-year clustering stability. Five linkage methods, three cluster validity indices, two outlier detection approaches, and varying cluster count constraints are compared across six annual review cycles (2016–2021) using F-measure derived from confusion matrices as the primary stability metric.
+      This study tests a range of algorithmic settings to identify which combination best maintains clustering stability over time. Five linkage methods, three cluster validity indices, two outlier detection approaches, and various cluster count constraints are evaluated across six annual review cycles from 2016 to 2021, with F-measure derived from confusion matrices serving as the primary stability indicator.
     </p>
     <div class="metrics-grid">
       <div class="metric-card">
@@ -293,10 +293,10 @@
     <h2>Hierarchical Clustering</h2>
     <p class="subtitle">Framework Overview · Configuration Variables</p>
     <p>
-      Hierarchical clustering builds a dendrogram by iteratively merging the closest pair of clusters until all observations form a single group. The female employee ratio (averaged over the prior two years) serves as the sole clustering variable. This study varies two types of conditions — the linkage method and the cluster validity index — to identify the configuration that produces the most consistent cluster assignments across annual review cycles.
+      Hierarchical clustering constructs a dendrogram by repeatedly merging the two closest clusters until all observations belong to a single group. In this study, the female employee ratio — averaged over the preceding two years — is used as the sole clustering variable. Two types of settings are varied: the linkage method, which defines how distance between clusters is measured, and the cluster validity index, which determines the optimal number of clusters. The goal is to find the combination that produces the most consistent cluster assignments from one annual review to the next.
     </p>
     <p>
-      After determining the best algorithmic setup, additional variables are tested in sequence: whether to apply an industry-based split-group pre-processing step, whether to compress outlier values, the choice of outlier detection method, and the upper/lower bounds on the number of clusters. Each variable's impact on stability is evaluated independently.
+      Once the best algorithmic pairing is identified, four additional variables are tested one at a time: whether to include an industry-based split-group pre-processing step, whether to compress outlier values before clustering, which outlier detection method to apply, and how to set the upper and lower bounds on the number of clusters. Each variable is assessed for its independent effect on stability.
     </p>
   </div>
 
@@ -308,27 +308,27 @@
     <div class="linkage-list">
       <div class="linkage-item">
         <div class="linkage-name">Single-linkage</div>
-        <div class="linkage-desc">Distance between clusters = distance between their two closest points. Prone to chaining; produces highly uneven cluster sizes.</div>
+        <div class="linkage-desc">The distance between two clusters is defined as the distance between their nearest pair of points. This method is prone to chaining, where clusters grow by absorbing nearby points one at a time, often resulting in highly uneven cluster sizes.</div>
         <div class="formula-block" style="margin-top:0.5rem;">d(Cᵢ, Cⱼ) = min<sub>a∈Cᵢ, b∈Cⱼ</sub> d(a, b)</div>
       </div>
       <div class="linkage-item">
         <div class="linkage-name">Complete-linkage</div>
-        <div class="linkage-desc">Distance between clusters = distance between their two farthest points. Produces compact, roughly equal-sized clusters.</div>
+        <div class="linkage-desc">The distance between two clusters is defined as the distance between their most distant pair of points. This approach tends to form compact clusters of roughly equal size.</div>
         <div class="formula-block" style="margin-top:0.5rem;">d(Cᵢ, Cⱼ) = max<sub>a∈Cᵢ, b∈Cⱼ</sub> d(a, b)</div>
       </div>
       <div class="linkage-item">
         <div class="linkage-name">Average-linkage (UPGMA)</div>
-        <div class="linkage-desc">Distance between clusters = average of all pairwise point distances across the two clusters.</div>
+        <div class="linkage-desc">The distance between two clusters is the mean of all pairwise distances between points from each cluster, providing a balanced measure between the extremes of single and complete linkage.</div>
         <div class="formula-block" style="margin-top:0.5rem;">d(Cᵢ, Cⱼ) = (1 / |Cᵢ||Cⱼ|) · Σ d(a, b)&nbsp;&nbsp;for a∈Cᵢ, b∈Cⱼ</div>
       </div>
       <div class="linkage-item">
         <div class="linkage-name">Centroid Method</div>
-        <div class="linkage-desc">Distance between clusters = distance between their respective centroids. Can invert the dendrogram order in edge cases.</div>
+        <div class="linkage-desc">The distance between two clusters is measured between their centroids. In certain edge cases, this method can reverse the order of merges in the dendrogram, making interpretation less reliable.</div>
         <div class="formula-block" style="margin-top:0.5rem;">d(Cᵢ, Cⱼ) = d(μ(Cᵢ), μ(Cⱼ))</div>
       </div>
       <div class="linkage-item selected">
         <div class="linkage-name">Ward's Method (D2) <span class="tag">Selected</span></div>
-        <div class="linkage-desc">Distance between clusters = increase in total within-cluster sum of squared distances upon merging. Maximises intra-cluster homogeneity at each step; produces the most evenly distributed clusters in this study.</div>
+        <div class="linkage-desc">Two clusters are merged based on the resulting increase in total within-cluster variance. By minimising variance at each step, this method consistently produces well-balanced, internally homogeneous clusters — making it the most stable option across all configurations tested in this study.</div>
         <div class="formula-block" style="margin-top:0.5rem;">d(Cᵢ, Cⱼ) = Σ ‖a − μ(Cᵢ∪Cⱼ)‖²&nbsp;&nbsp;for a∈Cᵢ∪Cⱼ</div>
         <div class="formula-note">μ(Cᵢ∪Cⱼ): centroid of the merged cluster</div>
       </div>
@@ -340,26 +340,26 @@
     <div class="section-tag">02.2 · Cluster Validity Indices</div>
     <h2>Determining the Optimal Number of Clusters</h2>
     <p class="subtitle">Objective · Minimise intra-cluster variance · Maximise inter-cluster separation</p>
-    <p>At each review cycle, a validity index evaluates candidate cluster counts and selects the partition with the best compactness-separation trade-off. The index's behaviour under varying cluster counts directly affects how consistently the same number of clusters is selected year over year.</p>
+    <p>At each review cycle, a validity index scores each candidate cluster count and selects the partition that best balances compactness within clusters and separation between them. How the index responds to small changes in cluster count has a direct bearing on how consistently the same number of clusters is chosen from one year to the next.</p>
     <div class="index-grid">
       <div class="index-card">
         <div class="index-card-name">Average Silhouette</div>
-        <div class="index-card-body">Combines cohesion and separation per point. Higher = better. Uses averaging, making it sensitive to marginal cluster boundaries.</div>
+        <div class="index-card-body">Measures both how tightly grouped each point is within its own cluster and how well it is separated from neighbouring clusters. A higher score indicates a better partition. Because the final score is averaged across all points, the index is sensitive to small boundary shifts between clusters.</div>
         <div class="formula-block" style="font-size:0.7rem;margin-top:0.6rem;">s(i) = (b(i)−a(i)) / max(a(i), b(i))</div>
       </div>
       <div class="index-card">
         <div class="index-card-name">Davies-Bouldin Index</div>
-        <div class="index-card-body">Ratio of intra-cluster scatter to inter-cluster distance. Lower = better. Also averaging-based; shares similar instabilities with Silhouette.</div>
+        <div class="index-card-body">Evaluates clustering quality by comparing intra-cluster scatter against inter-cluster distance. A lower value indicates a better result. Like Silhouette, it relies on averaging, which makes it susceptible to similar instability when the cluster count changes.</div>
         <div class="formula-block" style="font-size:0.7rem;margin-top:0.6rem;">DB = (1/k) Σ max<sub>j≠i</sub> (sᵢ+sⱼ)/dᵢⱼ</div>
       </div>
       <div class="index-card selected">
         <div class="index-card-name">Dunn Index <span class="tag">Selected</span></div>
-        <div class="index-card-body">Ratio of minimum inter-cluster distance to maximum intra-cluster diameter. Higher = better. Contains no averaging — produces the most stable cluster-count ordering across years.</div>
+        <div class="index-card-body">Compares the smallest gap between any two clusters against the largest spread within any single cluster. A higher value reflects better separation and compactness. Crucially, no averaging is involved in the calculation, which makes the index far more consistent in its cluster-count rankings across review cycles.</div>
         <div class="formula-block" style="font-size:0.7rem;margin-top:0.6rem;">DI = min δ(Cᵢ,Cⱼ) / max Δₙ</div>
       </div>
     </div>
     <div class="insight">
-      <strong>Why Dunn Index is more stable:</strong> Silhouette and Davies-Bouldin both use averaging in their formulas. When a cluster count shifts by one, the merged clusters can produce a noticeably worse index score, causing the optimal cluster count ordering to change significantly year to year — especially under Single-linkage. Dunn Index avoids this averaging artifact, yielding a more consistent priority ordering of candidate cluster counts across review cycles.
+      <strong>Why Dunn Index is more stable:</strong> Both Silhouette and Davies-Bouldin involve averaging across all clusters or data points. When the cluster count changes by just one, a single poorly-formed cluster can drag down the overall score noticeably, causing the optimal cluster count ordering to shift erratically from year to year — an effect that is especially pronounced under Single-linkage. The Dunn Index sidesteps this issue entirely by relying only on minimum and maximum values, leading to a more predictable priority ordering of candidate cluster counts across review cycles.
     </div>
   </div>
 
@@ -369,16 +369,16 @@
     <h2>Split-group Method</h2>
     <p class="subtitle">Industry-level Segmentation · Separating Structurally Different Sub-groups</p>
     <p>
-      Within each TWSE industry category, companies may have very different female workforce structures. For example, the transportation industry includes both shipping companies (typically male-dominated) and aviation companies (higher female ratio). Clustering them together without separation would undermine the fairness of subsequent indicator comparisons.
+      Companies within the same TWSE industry classification can vary considerably in their female workforce composition. The transportation sector, for instance, brings together both shipping companies — where the workforce tends to be predominantly male — and aviation companies, which typically employ a higher proportion of female staff. Placing these structurally different firms in the same peer group without prior separation would compromise the fairness of any subsequent indicator comparisons.
     </p>
     <p>
-      The split-group method addresses this by re-clustering within each industry using female employee ratio, before the main merge-group step. Single-linkage is used for this pre-processing stage, as it produces the most heterogeneous cluster sizes and most clearly separates sub-groups with divergent female workforce compositions.
+      The split-group method addresses this issue by performing a preliminary clustering step within each TWSE industry, using female employee ratio as the basis for further subdivision. Single-linkage is applied at this stage, as it is most effective at isolating sub-groups with noticeably different female workforce profiles from one another.
     </p>
     <p>
-      The split step is triggered when an industry's internal female ratio distribution exceeds a dispersion threshold. Splitting continues until each resulting sub-cluster meets internal homogeneity criteria — assessed by sample size requirements and the absence of outliers detected via the IQR box-plot method. Sub-clusters containing only a single company are exempt from further splitting.
+      Splitting is triggered when the spread of female ratios within an industry exceeds a defined dispersion threshold, and continues until each resulting sub-cluster satisfies internal homogeneity requirements — including a sufficient number of members and the absence of outliers as identified by the IQR box-plot method. Sub-clusters consisting of only one company are excluded from further splitting.
     </p>
     <div class="insight">
-      <strong>Note on research findings:</strong> Although the split-group step is theoretically well-motivated, analysis shows that removing it actually improves clustering goal attainment and F-measure stability. Without the split step, companies can be grouped freely across industry boundaries by female workforce similarity, yielding more flexible and internally consistent clusters. See Section 04.1 for the full comparison.
+      <strong>Note on research findings:</strong> Although the split-group step is well-grounded in theory, the data shows that omitting it actually leads to better clustering outcomes and higher F-measure stability. Without the industry constraint, companies are grouped freely based on the similarity of their female workforce ratios alone, resulting in more natural and internally consistent clusters. A full comparison is provided in Section 04.1.
     </div>
   </div>
 
@@ -388,13 +388,13 @@
     <h2>Merge-group Method</h2>
     <p class="subtitle">Aggregation Process · Grouping Companies by Female Workforce Profile</p>
     <p>
-      The final clustering pipeline aggregates companies directly by their female employee ratio. Candidate cluster counts are evaluated from best to worst according to the selected validity index, and the first count that satisfies the internal quality criteria is adopted as the final partition for that review cycle. The cluster count is constrained within a defined minimum and maximum range; if the quality criteria cannot be fully satisfied, the constraint boundary is used as a fallback.
+      In the main clustering stage, companies are grouped directly by their female employee ratio. The validity index scores each candidate cluster count from best to worst, and the algorithm adopts the first count that meets the internal quality criteria as the final partition for that review cycle. A defined minimum and maximum cluster count constrains the search; if no count within this range fully satisfies the criteria, the boundary value is used as a fallback.
     </p>
     <p>
-      Quality criteria assess within-cluster sample sufficiency and internal homogeneity. The specific thresholds — including minimum cluster size and outlier tolerance — are calibrated to ensure each cluster contains a representative sample for subsequent indicator comparisons.
+      The quality criteria focus on two aspects: each cluster must contain enough members to be representative, and the spread of values within each cluster must not be unduly wide. These thresholds are set to ensure that the resulting groups are sufficiently homogeneous for meaningful cross-group indicator comparisons in subsequent stages of the evaluation.
     </p>
     <div class="insight">
-      <strong>Key design decision:</strong> The cluster count constraint range is one of the most influential parameters for long-term stability. Expanding the upper bound beyond the optimal range was found to reduce year-over-year F-measure consistency. The final configuration constrains the range to 4–9 clusters.
+      <strong>Key design decision:</strong> The cluster count range is one of the most consequential parameters for long-term stability. Widening the upper bound beyond the optimal range was found to introduce inconsistency in year-over-year cluster assignments without meaningfully improving average F-measure. Based on the analysis, the final configuration limits the search to between 4 and 9 clusters.
     </div>
   </div>
 
@@ -408,11 +408,11 @@
     <h2>Measuring Cluster Consistency with Confusion Matrix &amp; F-measure</h2>
     <p class="subtitle">Law of Comparative Judgment · Pairwise Clustering · Precision · Recall · F-measure (β=1)</p>
     <p>
-      To quantify year-over-year clustering stability, this study treats the current cycle's partition as the <em>predicted clustering</em> (P) and the prior cycle's partition as the <em>gold standard</em> (Q). Stability is measured by how closely P reproduces Q for the subset of companies that participated in both review cycles.
+      To measure year-over-year clustering stability, the current cycle's partition is treated as the <em>predicted clustering</em> (P), while the previous cycle's partition serves as the <em>gold standard</em> (Q). Stability is assessed by how well P reproduces Q among the companies that took part in both review cycles.
     </p>
 
     <div class="insight" style="margin-bottom:1.2rem;">
-      <strong>Why confusion matrix via pairwise comparisons?</strong> Based on the Law of Comparative Judgment, stability is assessed through <em>pairs of clusterings</em> rather than direct label matching. For every pair of companies in the overlapping sample, the question is: were they assigned to the same cluster in both P and Q, or did their grouping change? This pairwise approach avoids the label-alignment problem inherent in hierarchical clustering, where cluster identifiers are arbitrary and change across cycles. The confusion matrix is then built from these pairwise outcomes, and F-measure is used to quantify how well the predicted clustering (P) hits the gold-standard clustering (Q).
+      <strong>Why use a confusion matrix with pairwise comparisons?</strong> Drawing on the Law of Comparative Judgment, this study evaluates clustering similarity through <em>pairs of clusterings</em> rather than by directly matching cluster labels. For every pair of companies in the shared sample, the question is simply: were they placed in the same cluster in both P and Q, or not? This pairwise approach avoids the label-alignment problem that arises in hierarchical clustering, since cluster identifiers are inherently arbitrary and change between cycles. A confusion matrix is then built from these pairwise outcomes, and F-measure is used to quantify how accurately the predicted clustering (P) reproduces the gold-standard clustering (Q).
     </div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.4rem 0;">
@@ -434,16 +434,16 @@
     </div>
 
     <p>
-      <strong>Why not Precision or Recall alone?</strong> Precision and Recall capture different aspects of clustering similarity, and each alone leads to a degenerate solution in this context.
+      <strong>Why not rely on Precision or Recall alone?</strong> Each metric captures a different dimension of clustering similarity, and optimising either one independently leads to a flawed outcome.
     </p>
     <p>
-      Maximising Precision alone — where every predicted pair (P) also appears in Q — encourages the algorithm to split clusters into smaller, more homogeneous sub-groups. While each predicted pairing is "safe," many pairs from Q are never predicted, resulting in high FN. In practice, this means some clusters will end up with too few members, reducing their representativeness for subsequent indicator comparisons.
+      Chasing high Precision — where every pair predicted by P also appears in Q — encourages the algorithm to break clusters into smaller, more specific sub-groups. Although each predicted pairing becomes more reliable, many pairs from Q are never captured, driving up FN. The practical consequence is that some clusters end up with too few members, limiting their usefulness for comparative indicator analysis.
     </p>
     <p>
-      Maximising Recall alone — where every gold-standard pair (Q) is captured in P — pushes the algorithm to merge clusters aggressively. Although no pair from Q is missed, many predicted pairs do not correspond to Q (high FP). This leads to oversized, heterogeneous clusters where companies with very different female workforce profiles are grouped together, undermining the fairness of comparisons.
+      Chasing high Recall — where every pair in Q is also captured by P — pushes the algorithm in the opposite direction, merging clusters aggressively to ensure nothing is missed. While FN drops, many predicted pairs have no counterpart in Q (high FP), resulting in oversized clusters that bring together companies with very different female workforce profiles, which undermines the fairness of the evaluation.
     </p>
     <p>
-      F-measure (β=1) balances Precision and Recall equally. It rewards configurations that maintain both the right number of members per cluster and meaningful internal similarity — the two properties most critical for stable, fair indicator evaluation across review cycles. An <strong>Adjusted F-measure</strong> = Average F-measure ÷ SD F-measure is further used to reward both high average stability and low year-to-year volatility jointly.
+      F-measure (β=1) treats both Precision and Recall as equally important. It rewards configurations that maintain meaningful cluster sizes and internal similarity simultaneously — the two qualities most essential for reliable, fair indicator evaluation across review cycles. An <strong>Adjusted F-measure</strong> = Average F-measure ÷ SD F-measure is also reported, jointly rewarding high average stability and low year-to-year variation.
     </p>
   </div>
 
@@ -457,7 +457,7 @@
     <h2>Stability Analysis Across Configurations</h2>
     <p class="subtitle">Four Variables Tested · Impact on F-measure · 2016–2021</p>
     <p>
-      The following analyses evaluate each variable in sequence, holding other conditions constant. The baseline for comparison is the configuration without a split-group step, without outlier compression, using IQR-based outlier detection, and with cluster count constrained to 4–10.
+      Each variable is examined in turn, with all other conditions held constant. The reference point for comparison is a configuration that omits the split-group step, applies no outlier compression, uses IQR-based outlier detection, and constrains the cluster count to a range of 4–10.
     </p>
   </div>
 
@@ -467,25 +467,25 @@
     <h2>Impact of the Split-group Pre-processing Step</h2>
     <p class="subtitle">With vs. Without Industry-level Segmentation</p>
     <p>
-      The split-group method first segments companies within each TWSE industry by female employee ratio before the main clustering step. While it helps separate structurally different sub-industries, it also restricts how companies can be re-grouped in the merge step — they can only join clusters from their own split industry partition.
+      When the split-group step is applied, companies within each TWSE industry are first divided by female employee ratio before being passed to the main clustering stage. This pre-processing can usefully separate sub-industries with distinct workforce compositions, but it also limits how companies can be reassigned during merging — each company can only join clusters formed from within its own industry partition.
     </p>
     <p>
-      Removing the split-group step allows the algorithm to cluster all companies directly by their female employee ratio, without industry constraints. This increased flexibility lets the algorithm find more natural groupings across industry boundaries.
+      Removing the split-group step allows every company to be clustered directly based on female employee ratio, regardless of industry. This gives the algorithm greater freedom to form groups that reflect genuine similarity in workforce structure across sector boundaries.
     </p>
     <div class="compare-grid">
       <div class="compare-card">
         <div class="compare-label">With Split-group</div>
         <div class="compare-value">Avg. F = 0.596</div>
-        <div class="compare-note">All 12 configurations fail to fully satisfy quality criteria before hitting the fallback cluster-count boundary. Remaining intra-cluster outliers indicate clustering goal is not fully achieved.</div>
+        <div class="compare-note">All 12 configurations fall back to the cluster count boundary before fully satisfying quality criteria. The presence of remaining intra-cluster outliers suggests the clustering goal has not been completely met.</div>
       </div>
       <div class="compare-card better">
         <div class="compare-label better">Without Split-group ★ Selected</div>
         <div class="compare-value">Avg. F = 0.628</div>
-        <div class="compare-note">All 12 configurations satisfy quality criteria before the fallback boundary. Clustering goal fully achieved; intra-cluster homogeneity is higher and more reliable across years.</div>
+        <div class="compare-note">All 12 configurations meet quality criteria before reaching the fallback boundary. The clustering goal is fully achieved, with higher and more consistent intra-cluster homogeneity across review cycles.</div>
       </div>
     </div>
     <div class="insight">
-      <strong>Conclusion:</strong> Removing the split-group step improves both clustering validity and F-measure stability. Subsequent analyses use the no-split-group configuration as baseline.
+      <strong>Conclusion:</strong> Removing the split-group step improves both clustering validity and F-measure stability. All subsequent analyses use the no-split-group setting as the reference configuration.
     </div>
   </div>
 
@@ -495,22 +495,22 @@
     <h2>Impact of Compressing Outlier Values</h2>
     <p class="subtitle">Winsorising IQR-detected Outliers to Boundary Values</p>
     <p>
-      Outlier compression winsorises companies whose female employee ratio is identified as an outlier by the IQR box-plot method — replacing extreme values with the corresponding boundary (Q1 − 1.5×IQR or Q3 + 1.5×IQR) before clustering, rather than excluding them.
+      Outlier compression, also known as winsorisation, replaces extreme female employee ratio values — those flagged as outliers by the IQR box-plot method — with the corresponding boundary value (Q1 − 1.5×IQR or Q3 + 1.5×IQR) before clustering. Rather than removing these companies from the sample, their values are capped so that they remain in the analysis without distorting the cluster structure.
     </p>
     <div class="compare-grid">
       <div class="compare-card better">
         <div class="compare-label better">With Compression</div>
         <div class="compare-value">Avg. F = 0.630&nbsp;·&nbsp;Adj. F = 7.97</div>
-        <div class="compare-note">Marginally higher average F-measure and adjusted F-measure compared to no compression.</div>
+        <div class="compare-note">A slight improvement in both average and adjusted F-measure compared to the baseline without compression.</div>
       </div>
       <div class="compare-card">
         <div class="compare-label">Without Compression (Baseline)</div>
         <div class="compare-value">Avg. F = 0.628&nbsp;·&nbsp;Adj. F = 7.83</div>
-        <div class="compare-note">Difference is minimal; both achieve the clustering goal across all configurations.</div>
+        <div class="compare-note">The gap between the two conditions is negligible; both achieve the clustering goal across all configurations.</div>
       </div>
     </div>
     <div class="insight">
-      <strong>Conclusion:</strong> Outlier compression has only a marginal effect on clustering stability. The improvement does not justify the added complexity; the no-compression baseline is retained.
+      <strong>Conclusion:</strong> Outlier compression produces only a marginal improvement and does not justify the added processing step. The no-compression baseline is kept for subsequent analyses.
     </div>
   </div>
 
@@ -520,22 +520,22 @@
     <h2>IQR Box-plot vs. Standard Deviation</h2>
     <p class="subtitle">Comparing Two Outlier Identification Approaches</p>
     <p>
-      Two outlier detection rules are compared: the IQR box-plot method (values beyond Q1 − 1.5×IQR or Q3 + 1.5×IQR) and a standard-deviation threshold (values beyond ±2 SD from the mean).
+      Two approaches to identifying outliers are compared. The IQR box-plot method flags values that fall below Q1 − 1.5×IQR or above Q3 + 1.5×IQR. The standard deviation method flags values that lie more than ±2 SD from the mean. Because the distribution of female employee ratios across industries is often skewed rather than symmetric, the two methods can produce quite different outlier sets.
     </p>
     <div class="compare-grid">
       <div class="compare-card better">
         <div class="compare-label better">IQR Box-plot ★ Selected</div>
         <div class="compare-value">Avg. F = 0.628&nbsp;·&nbsp;Adj. F = 7.83</div>
-        <div class="compare-note">All 12 configurations achieve the clustering goal. More robust to asymmetric distributions common in female employee ratio data.</div>
+        <div class="compare-note">All 12 configurations successfully meet the clustering goal. Better suited to asymmetric distributions, which are common in female employee ratio data across different industries.</div>
       </div>
       <div class="compare-card">
         <div class="compare-label">±2 SD Threshold</div>
         <div class="compare-value">Avg. F = 0.592&nbsp;·&nbsp;Adj. F = 7.36</div>
-        <div class="compare-note">3 of 12 configurations (all centroid-based) fail to reach the clustering goal. Average F-measure drops and SD F-measure increases substantially.</div>
+        <div class="compare-note">Three of the 12 configurations — all centroid-based — fail to meet the clustering goal. Average F-measure falls noticeably and year-to-year SD rises, indicating reduced stability.</div>
       </div>
     </div>
     <div class="insight">
-      <strong>Conclusion:</strong> The IQR method is significantly more reliable. The SD-based threshold is too lenient for this dataset — it admits more extreme values into clusters, causing some configurations to fail quality criteria. IQR is adopted as the standard for all subsequent analyses.
+      <strong>Conclusion:</strong> The IQR method proves considerably more reliable for this dataset. The SD threshold is too permissive in the presence of skewed distributions, allowing more extreme ratio values into the clusters and causing certain configurations to fall short of the quality criteria. IQR is adopted for all remaining analyses.
     </div>
   </div>
 
@@ -545,10 +545,10 @@
     <h2>Impact of Maximum &amp; Minimum Cluster Count</h2>
     <p class="subtitle">Constraining the Search Space · Kendall's Tau Stability Analysis</p>
     <p>
-      The cluster count constraint determines the range within which the validity index selects the optimal number of clusters. A wider range gives more flexibility but can lead to large year-to-year swings in cluster count, destabilising F-measure. A narrower range limits flexibility but improves consistency.
+      The cluster count range defines the set of candidate values from which the validity index selects the optimal partition. A wider range offers the algorithm more options, but also increases the risk of large year-to-year swings in cluster count, which in turn destabilises F-measure. A narrower range reduces this variability but at the cost of flexibility.
     </p>
     <p>
-      Kendall's tau is used to measure the correlation between validity index scores and cluster count orderings across consecutive review cycles. A high Kendall's tau means the priority ordering of candidate cluster counts is consistent year over year — the algorithm reliably converges to the same number of clusters.
+      Kendall's tau is used to assess how consistently the validity index ranks candidate cluster counts from one review cycle to the next. A high value indicates that the priority ordering of cluster counts remains largely the same across years — meaning the algorithm reliably converges on a similar number of clusters each time.
     </p>
 
     <div class="table-wrap">
@@ -580,7 +580,7 @@
     <p class="footnote">★ Ward.D2-Dunn configuration. Adjusted F-measure = Average F-measure / SD F-measure.</p>
 
     <div class="insight" style="margin-top:1.2rem;">
-      <strong>Conclusion:</strong> The 4–9 range achieves by far the lowest SD (0.030) and highest adjusted F-measure (20.65). While 4–7 and 4–8 have higher raw average F-measures, their larger SDs indicate inconsistent year-to-year performance. The 4–9 constraint is adopted as the final configuration.
+      <strong>Conclusion:</strong> The 4–9 range stands out clearly, recording the lowest year-to-year SD (0.030) and the highest adjusted F-measure (20.65). Although the 4–7 and 4–8 ranges achieve higher raw average F-measures, their larger SDs reveal that performance is uneven across years. The 4–9 range is adopted as the final cluster count constraint.
     </div>
   </div>
 
@@ -623,30 +623,30 @@
     <h2>Optimal Configuration &amp; Research Summary</h2>
     <p class="subtitle">Synthesising Findings Across All Four Variables</p>
     <p>
-      Each of the four methodological variables — split-group step, outlier compression, outlier detection method, and cluster count range — was tested independently. Their combined effect points clearly to a single optimal configuration.
+      Four methodological variables were tested in this study — the split-group pre-processing step, outlier compression, the choice of outlier detection method, and the cluster count range. Each was assessed independently, and together their results point clearly towards a single best-performing configuration.
     </p>
     <p>
-      The split-group pre-processing step, despite its intuitive appeal for handling industry heterogeneity, restricts the algorithm's flexibility and consistently fails to achieve full clustering quality criteria. Removing it allows companies to be grouped purely by female workforce similarity across all industries, yielding better-defined and more stable clusters.
+      The split-group step, while theoretically well-motivated as a way to handle industry heterogeneity, was found to limit the algorithm's flexibility and consistently prevented the clustering quality criteria from being fully met. Once removed, companies could be grouped freely based on the similarity of their female workforce ratios, without being constrained by industry boundaries. This produced better-defined, more stable clusters.
     </p>
     <p>
-      Among the 12 linkage–index combinations, Ward's method paired with the Dunn Index produces the highest adjusted F-measure under all tested cluster count ranges. Ward's method constructs balanced, homogeneous clusters; Dunn Index avoids the averaging instabilities that cause Silhouette and Davies-Bouldin to produce erratic cluster-count orderings — especially under Single-linkage.
+      Among the 12 linkage–index combinations tested, Ward's method paired with the Dunn Index delivered the highest adjusted F-measure across all cluster count ranges. Ward's method promotes balanced, homogeneous clusters by minimising within-cluster variance at each step. The Dunn Index, which involves no averaging in its formula, avoids the instability that causes Silhouette and Davies-Bouldin to produce erratic cluster-count orderings — particularly when used together with Single-linkage.
     </p>
     <p>
-      Outlier detection via the IQR box-plot method is more robust than a standard-deviation threshold for this dataset. The SD method is too permissive, admitting asymmetrically extreme female ratio values into clusters and causing some configurations to fail internal quality checks.
+      For outlier detection, the IQR box-plot method proved more dependable than the standard deviation threshold. The SD approach is too permissive when data is skewed, allowing more extreme female ratio values into the clusters and causing several configurations to fail their quality checks. The IQR method handles asymmetric distributions more reliably.
     </p>
     <p>
-      Finally, constraining the cluster count to 4–9 achieves the optimal balance of consistency and validity. The 4–9 range yields the lowest year-to-year SD (0.030) and highest adjusted F-measure (20.65) — far exceeding any wider range, where the additional flexibility introduces instability without meaningfully improving average F-measure.
+      Constraining the cluster count to a range of 4–9 achieves the best balance between consistency and quality. This range produces the lowest year-to-year SD (0.030) and the highest adjusted F-measure (20.65). Extending the upper bound beyond 9 introduces instability — the extra flexibility allows cluster counts to shift more dramatically between cycles — without delivering a meaningful improvement in average F-measure.
     </p>
   </div>
 
   <div class="conclusion-box">
     <h3>Final Configuration Summary</h3>
     <ul>
-      <li>Cluster companies directly by female employee ratio — no TWSE industry split-group pre-processing</li>
-      <li>Linkage method: <strong style="color:white;">Ward's (D2)</strong> — maximises within-cluster homogeneity at each merge; most stable under varying sample sizes</li>
-      <li>Cluster validity index: <strong style="color:white;">Dunn Index</strong> — no averaging in formula; produces the most consistent cluster-count priority ordering year over year</li>
-      <li>Outlier detection: <strong style="color:white;">IQR box-plot method</strong> — more robust to the asymmetric distribution of female employee ratios than ±2 SD</li>
-      <li>Cluster count constraint: <strong style="color:white;">minimum 4, maximum 9</strong> — lowest year-to-year SD of 0.030; adjusted F-measure of 20.65 across 2016–2021</li>
+      <li>Group companies directly by female employee ratio — omit the TWSE industry split-group pre-processing step</li>
+      <li>Linkage method: <strong style="color:white;">Ward's (D2)</strong> — minimises within-cluster variance at each merge step; performs most consistently as the sample size grows over time</li>
+      <li>Cluster validity index: <strong style="color:white;">Dunn Index</strong> — no averaging involved in the formula; delivers the most stable cluster-count priority ordering from one review cycle to the next</li>
+      <li>Outlier detection: <strong style="color:white;">IQR box-plot method</strong> — better suited to the skewed distribution of female employee ratios than the ±2 SD threshold</li>
+      <li>Cluster count range: <strong style="color:white;">minimum 4, maximum 9</strong> — lowest year-to-year SD of 0.030; adjusted F-measure of 20.65 across the 2016–2021 review period</li>
     </ul>
   </div>
 
