@@ -39,7 +39,7 @@
     .section{background:white;border:1px solid var(--border);padding:2rem 2.2rem;margin-bottom:0.4rem;}
     .section.accent{border-left:4px solid var(--gold);}
     .section.dark{background:var(--navy);border-color:transparent;}
-    .section-tag{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;}
+    .section-tag{font-family:'DM Mono',monospace;font-size:1.25rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;}
     .section h2{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:300;color:var(--navy);margin-bottom:0.35rem;}
     .section.dark h2{color:var(--gold);}
     .section .subtitle{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.4rem;padding-bottom:0.8rem;border-bottom:1px solid var(--border);}
@@ -165,7 +165,7 @@
       .section { padding: 1.4rem 1.2rem; }
       .section h2 { font-size: 1.3rem; }
       .section p { font-size: 0.88rem; }
-      .section-tag { font-size: 0.54rem; }
+      .section-tag { font-size: 1.05rem; }
       .section .subtitle { font-size: 0.58rem; }
 
       .metrics-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
@@ -243,7 +243,7 @@
     <h2>Abstract</h2>
     <p class="subtitle">Research Background &amp; Objective</p>
     <p>
-      The Gender Equality Evaluation Model classifies TWSE-listed and TPEx-listed companies into peer groups based on their female workforce structure, using hierarchical clustering to enable fair comparison of gender-related performance indicators. As more companies submit sustainability reports each year, new data points enter each review cycle, potentially altering cluster assignments and reducing the model's year-over-year consistency.
+      The Gender Equality Evaluation Model classifies TWSE-listed and TPEx-listed companies into peer groups based on their female workforce structure, using hierarchical clustering to enable fair comparison of gender-related performance indicators. As more companies submit ESG reports each year, new data points enter each review cycle, potentially altering cluster assignments and reducing the model's year-over-year consistency.
     </p>
     <p>
       This study tests a range of algorithmic settings to identify which combination best maintains clustering stability over time. Five linkage methods, three cluster validity indices, two outlier detection approaches, and various cluster count constraints are evaluated across six annual review cycles from 2016 to 2021, with F-measure derived from confusion matrices serving as the primary stability indicator.
@@ -368,10 +368,10 @@
     <h2>Split-group Method</h2>
     <p class="subtitle">Industry-level Segmentation · Separating Structurally Different Sub-groups</p>
     <p>
-      Companies within the same TWSE industry classification can vary considerably in their female workforce composition. The transportation sector, for instance, brings together both shipping companies — where the workforce tends to be predominantly male — and aviation companies, which typically employ a higher proportion of female staff. Placing these structurally different firms in the same peer group without prior separation would compromise the fairness of any subsequent indicator comparisons.
+      Companies within the same TWSE and TPEx industry classification can vary considerably in their female workforce composition. The transportation sector, for instance, brings together both shipping companies — where the workforce tends to be predominantly male — and aviation companies, which typically employ a higher proportion of female staff. Placing these structurally different firms in the same peer group without prior separation would compromise the fairness of any subsequent indicator comparisons.
     </p>
     <p>
-      The split-group method addresses this issue by performing a preliminary clustering step within each TWSE industry, using female employee ratio as the basis for further subdivision. Single-linkage is applied at this stage, as it is most effective at isolating sub-groups with noticeably different female workforce profiles from one another.
+      The split-group method addresses this issue by performing a preliminary clustering step within each TWSE and TPEx industry, using female employee ratio as the basis for further subdivision. Single-linkage is applied at this stage, as it is most effective at isolating sub-groups with noticeably different female workforce profiles from one another.
     </p>
     <p>
       Splitting is triggered when the spread of female ratios within an industry exceeds a defined dispersion threshold, and continues until each resulting sub-cluster satisfies internal homogeneity requirements — including a sufficient number of members and the absence of outliers as identified by the IQR box-plot method. Sub-clusters consisting of only one company are excluded from further splitting.
@@ -466,7 +466,7 @@
     <h2>Impact of the Split-group Pre-processing Step</h2>
     <p class="subtitle">With vs. Without Industry-level Segmentation</p>
     <p>
-      When the split-group step is applied, companies within each TWSE industry are first divided by female employee ratio before being passed to the main clustering stage. This pre-processing can usefully separate sub-industries with distinct workforce compositions, but it also limits how companies can be reassigned during merging — each company can only join clusters formed from within its own industry partition.
+      When the split-group step is applied, companies within each TWSE and TPEx industry are first divided by female employee ratio before being passed to the main clustering stage. This pre-processing can usefully separate sub-industries with distinct workforce compositions, but it also limits how companies can be reassigned during merging — each company can only join clusters formed from within its own industry partition.
     </p>
     <p>
       Removing the split-group step allows every company to be clustered directly based on female employee ratio, regardless of industry. This gives the algorithm greater freedom to form groups that reflect genuine similarity in workforce structure across sector boundaries.
@@ -641,7 +641,7 @@
   <div class="conclusion-box">
     <h3>Final Configuration Summary</h3>
     <ul>
-      <li>Group companies directly by female employee ratio — omit the TWSE industry split-group pre-processing step</li>
+      <li>Group companies directly by female employee ratio — omit the TWSE and TPEx industry split-group pre-processing step</li>
       <li>Linkage method: <strong style="color:white;">Ward's (D2)</strong> — minimises within-cluster variance at each merge step; performs most consistently as the sample size grows over time</li>
       <li>Cluster validity index: <strong style="color:white;">Dunn Index</strong> — no averaging involved in the formula; delivers the most stable cluster-count priority ordering from one review cycle to the next</li>
       <li>Outlier detection: <strong style="color:white;">IQR box-plot method</strong> — better suited to the skewed distribution of female employee ratios than the ±2 SD threshold</li>
@@ -656,8 +656,6 @@
   ══════════════════════════════════════ -->
   <div class="section">
     <div class="section-tag">06 · References</div>
-    <h2>Bibliography</h2>
-    <p class="subtitle">Literature Cited</p>
     <div style="display:flex;flex-direction:column;gap:1rem;margin-top:0.4rem;">
       <div style="display:flex;gap:1rem;align-items:flex-start;">
         <div style="flex-shrink:0;font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--gold);font-weight:500;min-width:1.4rem;">[1]</div>
@@ -686,7 +684,7 @@
     </div>
   </div>
 
-  <p class="page-footnote">Research &amp; Design: Sheng-Hung Wang (Hank) &nbsp;·&nbsp; October 2023 &nbsp;·&nbsp; TIP Taiwan Gender Equality Index (IX0223)</p>
+  <p class="page-footnote">Research &amp; Design: Sheng-Hung Wang (Hank) &nbsp;·&nbsp; October 2023</p>
 
 </main>
 </body>
